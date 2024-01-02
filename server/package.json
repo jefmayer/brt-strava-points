@@ -1,0 +1,28 @@
+{
+  "name": "brt-strava-points-server",
+  "description": "Express/MongoDB implementation",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Jef Mayer",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "co": "4.6.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongodb": "^3.7.4",
+    "reselect": "^4.1.8"
+  },
+  "engines": {
+    "node": "18.17.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jefmayer/brt-strava-points"
+  }
+}
