@@ -2,7 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/request-access": "pages/request-access.js",
   "/": "pages/index.js",
-  "/about": "pages/about.js"
+  "/exchange-token": "pages/exchange-token.js"
 }

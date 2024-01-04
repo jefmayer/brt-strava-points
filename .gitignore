@@ -2,6 +2,7 @@
 /client/node_modules
 /server/node_modules
 /client/.pnp
+/client/dist
 .pnp.js
 
 # testing
