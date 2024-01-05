@@ -1,4 +1,5 @@
-import { getParameterByName } from '../utils/url-utils' 
+/* eslint-disable no-console */
+import { getParameterByName } from '../utils/url-utils';
 
 const getAccessToken = () => {
   const code = getParameterByName('code');
@@ -6,7 +7,7 @@ const getAccessToken = () => {
   const clientSecret = process.env.NEXT_PUBLIC_STRAVA_CLIENT_SECRET;
   const endpoint = process.env.NEXT_PUBLIC_STRAVA_TOKEN_URL;
   const url = `${endpoint}?client_id=${clientId}&client_secret=${clientSecret}&code=${code}&grant_type=authorization_code`;
-  console.log(url);
+
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', url);
@@ -49,3 +50,4 @@ export {
   getAthleteData,
   verifyUser,
 };
+/* eslint-enable no-console */
