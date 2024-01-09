@@ -12,12 +12,18 @@ body {
 }
 
 .btn {
-  background-color: theme('colors.brt-red');
+  background-color: rgb(239, 239, 239);
+  border: .1rem solid transparent;
   border-radius: .4rem;
-  color: theme('colors.white');
+  color: theme('colors.black');
   font-size: theme('fontSize.sm');
   letter-spacing: .02em;
   padding: .4rem 1rem;
+}
+
+.btn-primary {
+  background-color: theme('colors.brt-red');
+  color: theme('colors.white');
 }
 
 .action-link {

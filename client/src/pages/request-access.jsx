@@ -14,7 +14,7 @@ export default function RequestAccess() {
       <main className={styles.main}>
         <div className={styles.description}>
           <h1 className="text-3xl font-bold">
-            Sign-Up
+            Request Access
           </h1>
         </div>
       </main>

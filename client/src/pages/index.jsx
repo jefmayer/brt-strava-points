@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import '../config';
-// import styles from '@/styles/Home.module.css';
+// import styles from '../styles/Home.module.css';
 
 export default function Home() {
   return (
@@ -34,14 +34,14 @@ export default function Home() {
             <p className=" mb-4 text-lg">See how you measure up on the all the leg-sapping segments you know and love around Tucson and southwest Arizona.</p>
             <div className="flex">
               <Link
-                className="btn mr-2"
+                className="btn btn-primary mr-2"
                 href={process.env.NEXT_PUBLIC_STRAVA_AUTHORIZATION_URL}
               >
                 Sign In
               </Link>
               <Link
-                className="action-link"
-                href="/"
+                className="btn"
+                href="/request-access"
               >
                 Request Access
               </Link>

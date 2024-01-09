@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { getParameterByName } from '../utils/url-utils';
 
 const getAccessToken = () => {
@@ -36,18 +35,7 @@ const getAthleteData = () => {
   //
 };
 
-const verifyUser = () => {
-  getAccessToken()
-    .then((data) => {
-      console.log(data);
-    })
-    .catch(() => {
-      console.error('user not found.');
-    });
-};
-
 export {
+  getAccessToken,
   getAthleteData,
-  verifyUser,
 };
-/* eslint-enable no-console */
