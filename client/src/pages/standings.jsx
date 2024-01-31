@@ -3,25 +3,29 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Head from 'next/head';
 import '../config';
-import { updateScoreboard } from '../actions';
+import RedirectComponent from '../components/redirect';
+import { updateStandings } from '../actions';
 
-class Scoreboard extends Component {
+class Standings extends Component {
   constructor(props) {
+    console.log('standings loaded');
     super(props);
-    const { isAuthenticated } = props;
-    // Check if user is logged in...
-    console.log(isAuthenticated);
-    this.onUpdateScoreboard = this.onUpdateScoreboard.bind(this);
-    // Get users
+    this.onupdateStandings = this.onupdateStandings.bind(this);
   }
 
-  onUpdateScoreboard(event) {
+  onupdateStandings(event) {
     const { dispatch } = this.props;
     event.preventDefault();
-    dispatch(updateScoreboard());
+    dispatch(updateStandings());
   }
 
   render() {
+    const {
+      role,
+      isAuthenticated,
+      isAuthenticatedError,
+    } = this.props;
+    const redirectCondition = !isAuthenticated || isAuthenticatedError;
     return (
       <>
         <Head>
@@ -31,19 +35,29 @@ class Scoreboard extends Component {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <main>
+          { redirectCondition
+              && (
+                <RedirectComponent
+                  route="/"
+                />
+              )}
           <div className="container mx-auto">
             <div className="flex my-5">
               <div>
-                <h1 className="font-bold text-xl">Scoreboard</h1>
-                <p className="text-sm">Last updated on: </p>
+                <h1 className="font-bold text-xl">Standings</h1>
+                <p className="text-xs">
+                  Role:&nbsp;
+                  { role }
+                </p>
+                <p className="text-xs">Last updated on: </p>
               </div>
               <div>
                 <button
                   className="btn btn-primary"
-                  onClick={this.onUpdateScoreboard}
+                  onClick={this.onupdateStandings}
                   type="button"
                 >
-                  Update Scoreboard
+                  Update Standings
                 </button>
               </div>
             </div>
@@ -70,19 +84,25 @@ class Scoreboard extends Component {
   }
 }
 
-Scoreboard.propTypes = {
+Standings.propTypes = {
   dispatch: PropTypes.func,
   isAuthenticated: PropTypes.bool,
+  isAuthenticatedError: PropTypes.bool,
+  role: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
   const { userStatus } = state;
   const {
     isAuthenticated,
+    isAuthenticatedError,
+    role,
   } = userStatus;
   return {
     isAuthenticated,
+    isAuthenticatedError,
+    role,
   };
 };
 
-export default connect(mapStateToProps)(Scoreboard);
+export default connect(mapStateToProps)(Standings);

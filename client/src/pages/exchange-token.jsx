@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Head from 'next/head';
-import { authenticate } from '../actions';
+import {
+  accessTokenError,
+  authenticate,
+  initialize,
+} from '../actions';
 import '../config';
 import { getAccessToken } from '../api/strava';
 import RedirectComponent from '../components/redirect';
@@ -13,18 +17,22 @@ class ExchangeToken extends Component {
     const { dispatch } = props;
     getAccessToken()
       .then((data) => {
-        console.log(data);
-        const { athlete } = data;
-        const { id } = athlete;
-        dispatch(authenticate({ id }));
+        dispatch(authenticate(data))
+          .then(dispatch(initialize(data)));
       })
       .catch(() => {
-        console.error('user not found.');
+        dispatch(accessTokenError());
       });
   }
 
   render() {
-    const { isAuthenticated } = this.props;
+    const {
+      isAuthenticated,
+      isAuthenticatedError,
+      isInitializationComplete,
+    } = this.props;
+    const redirectToAppCondition = isAuthenticated && isInitializationComplete;
+    const redirectAccessDeniedCondition = !isAuthenticated && isAuthenticatedError;
     return (
       <>
         <Head>
@@ -36,11 +44,19 @@ class ExchangeToken extends Component {
         <main>
           <div className="container mx-auto">
             <p>Redirecting...</p>
-            {isAuthenticated
-              && (
-                <RedirectComponent />
-              )}
           </div>
+          {redirectToAppCondition
+            && (
+              <RedirectComponent
+                route="/standings"
+              />
+            )}
+          {redirectAccessDeniedCondition
+            && (
+              <RedirectComponent
+                route="/"
+              />
+            )}
         </main>
       </>
     );
@@ -50,17 +66,24 @@ class ExchangeToken extends Component {
 ExchangeToken.propTypes = {
   dispatch: PropTypes.func,
   isAuthenticated: PropTypes.bool,
+  isAuthenticatedError: PropTypes.bool,
+  isInitializationComplete: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
-  const { userStatus } = state;
+  const {
+    appStatus,
+    userStatus,
+  } = state;
   const {
     isAuthenticated,
     isAuthenticatedError,
   } = userStatus;
+  const { isInitializationComplete } = appStatus;
   return {
     isAuthenticated,
     isAuthenticatedError,
+    isInitializationComplete,
   };
 };
 

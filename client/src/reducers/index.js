@@ -1,30 +1,90 @@
 import { combineReducers } from 'redux';
 
 import {
+  ACCESS_TOKEN_ERROR,
   AUTHENTICATE,
+  INITIALIZATION_COMPLETE,
   LOG_OUT,
+  USER_SESSION_DATA,
 } from '../actions';
+
+const userSessionData = (state = {}, action = {}) => {
+  const {
+    data,
+    type,
+  } = action;
+  
+  switch (type) {
+    case USER_SESSION_DATA:
+      const {
+        access_token,
+        athlete,
+        expires_at,
+        expires_in,
+        refresh_token,
+        token_type,
+      } = data;
+      return {
+        ...state,
+        access_token,
+        athlete,
+        expires_at,
+        expires_in,
+        refresh_token,
+        token_type,
+      };
+    default:
+      return state;
+  }
+};
+
+const appStatus = (state = {
+  isInitializationComplete: false,
+}, action = {}) => {
+  const { type } = action;
+  switch (type) {
+    case INITIALIZATION_COMPLETE:
+      return {
+        ...state,
+        isInitializationComplete: true,
+      };
+    default:
+      return state;
+  }
+};
 
 const userStatus = (state = {
   isAuthenticated: false,
-  isAuthenticationError: false,
-  response: [{ success: 'error' }],
+  isAuthenticatedError: false,
 }, action = {}) => {
-  switch (action.type) {
+  const {
+    data,
+    type,
+  } = action;
+  switch (type) {
     case AUTHENTICATE:
-      if (action.data[0].success === 'success') {
+      const {
+        role,
+        success,
+      } = data;
+      if (success === 'success') {
         return {
           ...state,
           isAuthenticated: true,
-          isAuthenticationError: false,
-          response: action.data,
+          isAuthenticatedError: false,
+          role,
         };
       }
       return {
         ...state,
         isAuthenticated: false,
-        isAuthenticationError: true,
-        response: action.data,
+        isAuthenticatedError: true,
+      };
+    case ACCESS_TOKEN_ERROR:
+      return {
+        ...state,
+        isAuthenticated: false,
+        isAuthenticatedError: true,
       };
     case LOG_OUT:
       return {
@@ -37,6 +97,8 @@ const userStatus = (state = {
 };
 
 const rootReducer = combineReducers({
+  appStatus,
+  userSessionData,
   userStatus,
 });
 
