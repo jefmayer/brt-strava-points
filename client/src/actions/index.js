@@ -9,6 +9,8 @@ export const UPDATE_CHALLENGE_SEGMENTS = 'UPDATE_CHALLENGE_SEGMENTS';
 export const UPDATE_USER_SEGMENTS = 'UPDATE_USER_SEGMENTS';
 export const USER_SESSION_DATA = 'USER_SESSION_DATA';
 
+const apiUri = process.env.NEXT_PUBLIC_API_URI;
+
 export const accessTokenError = () => ({
   type: ACCESS_TOKEN_ERROR,
 });
@@ -45,7 +47,7 @@ export const getUserSegments = (token, segments) => {
 };
 
 export const updateUserAthleteData = (data) => (
-  fetch('http://localhost:5001/api/v1/users/update', {
+  fetch(`${apiUri}/api/v1/users/update`, {
     method: 'POST',
     headers: new Headers({
       Accept: 'application/json',
@@ -57,7 +59,7 @@ export const updateUserAthleteData = (data) => (
 );
 
 export const getChallengeSegments = () => (
-  fetch('http://localhost:5001/api/v1/segments', {
+  fetch(`${apiUri}/api/v1/segments`, {
     method: 'GET',
     headers: new Headers({
       Accept: 'application/json',
@@ -72,7 +74,7 @@ export const authenticate = (data) => dispatch => { /* eslint-disable-line arrow
     athlete,
   } = data;
   const { id } = athlete;
-  return fetch('http://localhost:5001/api/v1/authenticate', {
+  return fetch(`${apiUri}/api/v1/authenticate`, {
     method: 'POST',
     headers: new Headers({
       Accept: 'application/json',
@@ -90,14 +92,14 @@ export const initialize = (data) => dispatch => { /* eslint-disable-line arrow-p
     access_token,
     athlete,
   } = data;
-  // Persist and save user's data in session
-  persistUserSessionData(data);
+  // Persist and save user and app data in session
+  dispatch(persistUserSessionData(data));
   updateUserAthleteData(athlete)
     .then(getChallengeSegments()
       .then((json) => {
+        dispatch(updateChallengeSegments(json));
         getUserSegments(access_token, json)
           .then(() => {
-            console.log('initializationComplete');
             dispatch(initializationComplete());
           });
       }));

@@ -5,6 +5,7 @@ import {
   AUTHENTICATE,
   INITIALIZATION_COMPLETE,
   LOG_OUT,
+  UPDATE_CHALLENGE_SEGMENTS,
   USER_SESSION_DATA,
 } from '../actions';
 
@@ -13,7 +14,6 @@ const userSessionData = (state = {}, action = {}) => {
     data,
     type,
   } = action;
-  
   switch (type) {
     case USER_SESSION_DATA:
       const {
@@ -32,6 +32,22 @@ const userSessionData = (state = {}, action = {}) => {
         expires_in,
         refresh_token,
         token_type,
+      };
+    default:
+      return state;
+  }
+};
+
+const appData = (state = {}, action = {}) => {
+  const {
+    data,
+    type,
+  } = action;
+  switch (type) {
+    case UPDATE_CHALLENGE_SEGMENTS:
+      return {
+        ...state,
+        segments: data,
       };
     default:
       return state;
@@ -97,6 +113,7 @@ const userStatus = (state = {
 };
 
 const rootReducer = combineReducers({
+  appData,
   appStatus,
   userSessionData,
   userStatus,
