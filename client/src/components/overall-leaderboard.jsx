@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-
 class OverallLeaderboard extends Component {
   componentDidMount() {
   }
@@ -9,7 +8,6 @@ class OverallLeaderboard extends Component {
   render() {
     return (
       <table className="table-auto w-full">
-        <caption className="font-bold text-left text-xl">Overall</caption>
         <thead>
           <tr>
             <th className="text-left text-xs">Rank</th>
