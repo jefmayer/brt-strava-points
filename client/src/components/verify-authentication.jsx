@@ -1,34 +1,27 @@
 import '../styles/header.module.scss';
 
-import React, { Component } from 'react';
-
 import PropTypes from 'prop-types';
-import RedirectComponent from '../components/redirect';
+import React from 'react';
+import RedirectComponent from './redirect';
 import { connect } from 'react-redux';
 
-class VerifyAuthentication extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const {
-      isAuthenticated,
-      isAuthenticatedError,
-    } = this.props;
-    const redirectCondition = !isAuthenticated || isAuthenticatedError;
-    return (
-      <>
+function VerifyAuthentication({
+  isAuthenticated,
+  isAuthenticatedError,
+}) {
+  const redirectCondition = !isAuthenticated || isAuthenticatedError;
+  return (
+    <div>
       { redirectCondition
         && (
           <RedirectComponent
             route="/"
           />
         )}
-      </>
-    );
-  }
+    </div>
+  );
 }
+
 VerifyAuthentication.propTypes = {
   isAuthenticated: PropTypes.bool,
   isAuthenticatedError: PropTypes.bool,

@@ -13,6 +13,7 @@ class Header extends Component {
 
   onMenuClick(event) {
     console.log(event);
+    console.log(this);
   }
 
   render() {
@@ -20,24 +21,25 @@ class Header extends Component {
       athlete,
       role,
     } = this.props;
-    if (athlete == null) {
+    console.log(`role: ${role}`);
+    if (athlete === undefined) {
       return;
     }
-    console.log(`role: ${role}`);
-    const { profile_medium } = athlete
+    const { profile_medium } = athlete;
     return (
       <header className="bg-brt-red h-16">
         <div className="flex h-full items-center justify-between mx-auto px-4">
           <div>
             <Image
-                alt=""
-                height={40}
-                src="/images/brt-logo-white.svg"
-                width={117}
-              />
+              alt=""
+              height={40}
+              src="/images/brt-logo-white.svg"
+              width={117}
+            />
           </div>
           <button
             className={styles.btn}
+            label="User Menu"
             onClick={this.onMenuClick}
             type="button"
           >
@@ -62,7 +64,9 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  athlete: PropTypes.object,
+  athlete: PropTypes.shape({
+    profile_medium: PropTypes.string,
+  }).isRequired,
   role: PropTypes.string,
 };
 
@@ -79,6 +83,7 @@ const mapStateToProps = (state) => {
   } = userStatus;
   return {
     athlete,
+    role,
   };
 };
 

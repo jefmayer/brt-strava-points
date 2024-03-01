@@ -1,6 +1,5 @@
-import React from 'react';
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import React from 'react';
 
 export default function RequestAccess() {
   return (
@@ -11,11 +10,9 @@ export default function RequestAccess() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <h1 className="text-3xl font-bold">
-            Request Access
-          </h1>
+      <main>
+        <div className="container mb-6 mt-12 mx-auto">
+          <h1 className="font-bold text-5xl text-center">Request Access</h1>
         </div>
       </main>
     </>

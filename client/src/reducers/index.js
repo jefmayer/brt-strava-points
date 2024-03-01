@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux';
-
 import {
   ACCESS_TOKEN_ERROR,
   AUTHENTICATE,
@@ -9,21 +7,26 @@ import {
   USER_SESSION_DATA,
 } from '../actions';
 
+import { combineReducers } from 'redux';
+
 const userSessionData = (state = {}, action = {}) => {
+  if (action.data === undefined) {
+    return state;
+  }
   const {
     data,
     type,
   } = action;
+  const {
+    access_token,
+    athlete,
+    expires_at,
+    expires_in,
+    refresh_token,
+    token_type,
+  } = data;
   switch (type) {
     case USER_SESSION_DATA:
-      const {
-        access_token,
-        athlete,
-        expires_at,
-        expires_in,
-        refresh_token,
-        token_type,
-      } = data;
       return {
         ...state,
         access_token,
@@ -73,16 +76,19 @@ const userStatus = (state = {
   isAuthenticated: false,
   isAuthenticatedError: false,
 }, action = {}) => {
+  if (action.data === undefined) {
+    return state;
+  }
   const {
     data,
     type,
   } = action;
+  const {
+    role,
+    success,
+  } = data;
   switch (type) {
     case AUTHENTICATE:
-      const {
-        role,
-        success,
-      } = data;
       if (success === 'success') {
         return {
           ...state,

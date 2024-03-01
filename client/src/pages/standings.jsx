@@ -4,20 +4,29 @@ import React, { Component } from 'react';
 
 import Head from 'next/head';
 import Header from '../components/header';
-import OverallLeaderboard from '../components/overall-leaderboard';
+import Leaderboard from '../components/standings/leaderboard';
 import PropTypes from 'prop-types';
-import StandingsMenu from '../components/standings-menu';
+import StandingsMenu from '../components/standings/standings-menu';
 import VerifyAuthentication from '../components/verify-authentication';
 import { connect } from 'react-redux';
+import { getDefaultSegmentObj } from '../helpers/segment-helpers';
 
 class Standings extends Component {
   constructor(props) {
     super(props);
-    console.log('/standings');
+    const selectedSegment = getDefaultSegmentObj();
+    this.state = { selectedSegment };
+    this.setSelectedSegment = this.setSelectedSegment.bind(this);
+  }
+
+  setSelectedSegment(selectedSegment) {
+    this.setState({ selectedSegment });
   }
 
   render() {
     const { segments } = this.props;
+    const { selectedSegment } = this.state;
+    const isSegments = segments !== undefined;
     return (
       <>
         <Head>
@@ -32,10 +41,17 @@ class Standings extends Component {
           <div className="container mb-6 mt-12 mx-auto">
             <h1 className="font-bold text-5xl text-center">Standings</h1>
           </div>
-          <StandingsMenu
-            segments = {segments}
+          { isSegments
+            && (
+              <StandingsMenu
+                segments={segments}
+                selectedSegment={selectedSegment}
+                setSelectedSegment={this.setSelectedSegment}
+              />
+            )}
+          <Leaderboard
+            segment={selectedSegment}
           />
-          <OverallLeaderboard />
         </main>
       </>
     );
@@ -43,8 +59,6 @@ class Standings extends Component {
 }
 
 Standings.propTypes = {
-  isAuthenticated: PropTypes.bool,
-  isAuthenticatedError: PropTypes.bool,
   segments: PropTypes.arrayOf(PropTypes.object),
 };
 

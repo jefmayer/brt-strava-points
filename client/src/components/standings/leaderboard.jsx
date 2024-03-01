@@ -1,7 +1,6 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
-class OverallLeaderboard extends Component {
+class Leaderboard extends Component {
   componentDidMount() {
   }
 
@@ -27,6 +26,4 @@ class OverallLeaderboard extends Component {
   }
 }
 
-OverallLeaderboard.propTypes = { };
-
-export default OverallLeaderboard;
+export default Leaderboard;

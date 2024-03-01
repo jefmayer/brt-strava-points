@@ -15,17 +15,11 @@ const getAccessToken = () => {
         const response = JSON.parse(xhr.responseText);
         resolve(response);
       } else {
-        reject({
-          status: xhr.status,
-          statusText: xhr.statusText,
-        });
+        reject(new Error(`${xhr.status}: ${xhr.statusText}`));
       }
     };
     xhr.onerror = () => {
-      reject({
-        status: xhr.status,
-        statusText: xhr.statusText,
-      });
+      reject(new Error(`${xhr.status}: ${xhr.statusText}`));
     };
     xhr.send();
   });
@@ -45,17 +39,11 @@ const getSegmentEffort = (segmentId, token) => {
         console.log(response);
         resolve(response);
       } else {
-        reject({
-          status: xhr.status,
-          statusText: xhr.statusText,
-        });
+        reject(new Error(`${xhr.status}: ${xhr.statusText}`));
       }
     };
     xhr.onerror = () => {
-      reject({
-        status: xhr.status,
-        statusText: xhr.statusText,
-      });
+      reject(new Error(`${xhr.status}: ${xhr.statusText}`));
     };
     xhr.send();
   });
