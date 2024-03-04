@@ -4,6 +4,10 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import dynamic from 'next/dynamic'
+
+const LoginButton = dynamic(() => import('../components/login-button'), { ssr: false })
+
 
 export default function Home() {
   return (
@@ -33,12 +37,7 @@ export default function Home() {
             </h1>
             <p className=" mb-4 text-lg">See how you measure up on the all the leg-sapping segments you know and love around Tucson and southwest Arizona.</p>
             <div className="flex">
-              <Link
-                className="btn btn-primary mr-2"
-                href={process.env.NEXT_PUBLIC_STRAVA_AUTHORIZATION_URL}
-              >
-                Sign In
-              </Link>
+              <LoginButton />
               <Link
                 className="btn"
                 href="/request-access"

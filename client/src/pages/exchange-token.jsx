@@ -1,15 +1,18 @@
+import '../config';
+
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import Head from 'next/head';
 import {
   accessTokenError,
-  authenticate,
   initialize,
 } from '../actions';
-import '../config';
-import { getAccessToken } from '../api/strava';
+
+import Head from 'next/head';
+import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
+import { authenticate } from '../api/brt';
+import { connect } from 'react-redux';
+import { getAccessToken } from '../api/strava';
+import { persistTokenData } from '../utils/strava-oauth-utils';
 
 class ExchangeToken extends Component {
   constructor(props) {
@@ -17,6 +20,7 @@ class ExchangeToken extends Component {
     const { dispatch } = props;
     getAccessToken()
       .then((data) => {
+        persistTokenData(data);
         dispatch(authenticate(data))
           .then(dispatch(initialize(data)));
       })

@@ -11,10 +11,9 @@ class StandingsMenu extends Component {
     this.onMenuClick = this.onMenuClick.bind(this);
   }
 
-  onMenuClick(event) {
-    const { setSelectedSegment } = this.props;
-    const defaultSegment = getDefaultSegmentObj();
-    setSelectedSegment(defaultSegment);
+  onMenuClick() {
+    console.log(this);
+    console.log('open/close standings menu')
   }
 
   render() {

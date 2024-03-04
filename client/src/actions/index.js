@@ -1,3 +1,8 @@
+import {
+  getChallengeSegments,
+  updateUserAthleteData,
+} from '../api/brt';
+
 import { getSegmentEffort } from '../api/strava';
 
 export const ACCESS_TOKEN_ERROR = 'ACCESS_TOKEN_ERROR';
@@ -8,8 +13,6 @@ export const LOG_OUT = 'LOG_OUT';
 export const UPDATE_CHALLENGE_SEGMENTS = 'UPDATE_CHALLENGE_SEGMENTS';
 export const UPDATE_USER_SEGMENTS = 'UPDATE_USER_SEGMENTS';
 export const USER_SESSION_DATA = 'USER_SESSION_DATA';
-
-const apiUri = process.env.NEXT_PUBLIC_API_URI;
 
 export const accessTokenError = () => ({
   type: ACCESS_TOKEN_ERROR,
@@ -44,47 +47,6 @@ export const getUserSegments = (token, segments) => {
     getSegmentEffort(segment.id, token)
   ));
   return Promise.all(arr);
-};
-
-export const updateUserAthleteData = (data) => (
-  fetch(`${apiUri}/api/v1/users/update`, {
-    method: 'POST',
-    headers: new Headers({
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    }),
-    body: JSON.stringify({ data }),
-  })
-    .then((response) => response.json())
-);
-
-export const getChallengeSegments = () => (
-  fetch(`${apiUri}/api/v1/segments`, {
-    method: 'GET',
-    headers: new Headers({
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    }),
-  })
-    .then((response) => response.json())
-);
-
-export const authenticate = (data) => dispatch => { /* eslint-disable-line arrow-parens */
-  const {
-    athlete,
-  } = data;
-  const { id } = athlete;
-  return fetch(`${apiUri}/api/v1/authenticate`, {
-    method: 'POST',
-    headers: new Headers({
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    }),
-    body: JSON.stringify({ id }),
-  })
-    .then((response) => response.json())
-    // Authenticate user
-    .then((json) => dispatch(authenticationAttempt(json)));
 };
 
 export const initialize = (data) => dispatch => { /* eslint-disable-line arrow-parens */

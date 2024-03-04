@@ -9,6 +9,7 @@ function VerifyAuthentication({
   isAuthenticated,
   isAuthenticatedError,
 }) {
+  console.log(`${isAuthenticated}, ${isAuthenticatedError}`);
   const redirectCondition = !isAuthenticated || isAuthenticatedError;
   return (
     <div>
