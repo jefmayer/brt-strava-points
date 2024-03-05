@@ -1,6 +1,10 @@
 import '../config';
 
 import React, { Component } from 'react';
+import {
+  getAccessToken,
+  getUserId,
+} from '../utils/strava-oauth-utils';
 
 import Head from 'next/head';
 import Header from '../components/header';
@@ -8,8 +12,10 @@ import Leaderboard from '../components/standings/leaderboard';
 import PropTypes from 'prop-types';
 import StandingsMenu from '../components/standings/standings-menu';
 import VerifyAuthentication from '../components/verify-authentication';
+import { authenticate } from '../api/brt';
 import { connect } from 'react-redux';
 import { getDefaultSegmentObj } from '../helpers/segment-helpers';
+import { initialize } from '../actions';
 
 class Standings extends Component {
   constructor(props) {
@@ -17,6 +23,14 @@ class Standings extends Component {
     const selectedSegment = getDefaultSegmentObj();
     this.state = { selectedSegment };
     this.setSelectedSegment = this.setSelectedSegment.bind(this);
+    const { dispatch } = props;
+    const id = getUserId();
+    authenticate(id) // authenticate needs to return athlete data
+      .then(() => {
+        const token = getAccessToken();
+        console.log(`token: ${token}`);
+        dispatch(initialize(token))
+      });
   }
 
   setSelectedSegment(selectedSegment) {
@@ -59,6 +73,7 @@ class Standings extends Component {
 }
 
 Standings.propTypes = {
+  dispatch: PropTypes.func,
   segments: PropTypes.arrayOf(PropTypes.object),
 };
 

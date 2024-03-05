@@ -1,42 +1,42 @@
 import '../config';
 
 import React, { Component } from 'react';
-import {
-  accessTokenError,
-  initialize,
-} from '../actions';
 
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
-import { authenticate } from '../api/brt';
 import { connect } from 'react-redux';
 import { getAccessToken } from '../api/strava';
-import { persistTokenData } from '../utils/strava-oauth-utils';
+import { persistTokenRepsonse } from '../utils/strava-oauth-utils';
+import { persistUserSessionData } from '../actions';
+import { updateUserAthleteData } from '../api/brt';
 
 class ExchangeToken extends Component {
   constructor(props) {
     super(props);
     const { dispatch } = props;
+    this.state = {
+      authenticationError: false,
+      authenticationSuccess: false,
+    };
     getAccessToken()
       .then((data) => {
-        persistTokenData(data);
-        dispatch(authenticate(data))
-          .then(dispatch(initialize(data)));
+        persistTokenRepsonse(data);
+        const { athlete } = data;
+        updateUserAthleteData(athlete);
+        dispatch(persistUserSessionData(data));
+        this.setState({ authenticationSuccess: true });
       })
       .catch(() => {
-        dispatch(accessTokenError());
+        this.setState({ authenticationError: true });
       });
   }
 
   render() {
     const {
-      isAuthenticated,
-      isAuthenticatedError,
-      isInitializationComplete,
-    } = this.props;
-    const redirectToAppCondition = isAuthenticated && isInitializationComplete;
-    const redirectAccessDeniedCondition = !isAuthenticated && isAuthenticatedError;
+      authenticationError,
+      authenticationSuccess,
+    } = this.state;
     return (
       <>
         <Head>
@@ -49,13 +49,13 @@ class ExchangeToken extends Component {
           <div className="container mx-auto">
             <p>Redirecting...</p>
           </div>
-          {redirectToAppCondition
+          {authenticationSuccess
             && (
               <RedirectComponent
                 route="/standings"
               />
             )}
-          {redirectAccessDeniedCondition
+          {authenticationError
             && (
               <RedirectComponent
                 route="/"
@@ -69,26 +69,9 @@ class ExchangeToken extends Component {
 
 ExchangeToken.propTypes = {
   dispatch: PropTypes.func,
-  isAuthenticated: PropTypes.bool,
-  isAuthenticatedError: PropTypes.bool,
-  isInitializationComplete: PropTypes.bool,
 };
 
-const mapStateToProps = (state) => {
-  const {
-    appStatus,
-    userStatus,
-  } = state;
-  const {
-    isAuthenticated,
-    isAuthenticatedError,
-  } = userStatus;
-  const { isInitializationComplete } = appStatus;
-  return {
-    isAuthenticated,
-    isAuthenticatedError,
-    isInitializationComplete,
-  };
-};
-
-export default connect(mapStateToProps)(ExchangeToken);
+export default connect(
+  null,
+  null,
+)(ExchangeToken);

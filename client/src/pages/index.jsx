@@ -4,14 +4,18 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import dynamic from 'next/dynamic'
-
-const LoginButton = dynamic(() => import('../components/login-button'), { ssr: false })
-
+import RedirectComponent from '../components/redirect';
+import { isAuthenticated } from '../utils/strava-oauth-utils';
 
 export default function Home() {
   return (
     <>
+      { isAuthenticated()
+        && (
+          <RedirectComponent
+            route="/standings"
+          />
+        )}
       <Head>
         <title>{ global.config.i18n.siteTitle.en }</title>
         <meta name="description" content="" />
@@ -37,7 +41,12 @@ export default function Home() {
             </h1>
             <p className=" mb-4 text-lg">See how you measure up on the all the leg-sapping segments you know and love around Tucson and southwest Arizona.</p>
             <div className="flex">
-              <LoginButton />
+              <Link
+                className="btn btn-primary mr-2"
+                href={process.env.NEXT_PUBLIC_STRAVA_AUTHORIZATION_URL}
+              >
+                Sign In
+              </Link>
               <Link
                 className="btn"
                 href="/request-access"

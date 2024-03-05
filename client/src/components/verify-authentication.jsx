@@ -1,16 +1,9 @@
-import '../styles/header.module.scss';
-
-import PropTypes from 'prop-types';
 import React from 'react';
 import RedirectComponent from './redirect';
-import { connect } from 'react-redux';
+import { isAuthenticated } from '../utils/strava-oauth-utils';
 
-function VerifyAuthentication({
-  isAuthenticated,
-  isAuthenticatedError,
-}) {
-  console.log(`${isAuthenticated}, ${isAuthenticatedError}`);
-  const redirectCondition = !isAuthenticated || isAuthenticatedError;
+export default function VerifyAuthentication() {
+  const redirectCondition = !isAuthenticated();
   return (
     <div>
       { redirectCondition
@@ -22,22 +15,3 @@ function VerifyAuthentication({
     </div>
   );
 }
-
-VerifyAuthentication.propTypes = {
-  isAuthenticated: PropTypes.bool,
-  isAuthenticatedError: PropTypes.bool,
-};
-
-const mapStateToProps = (state) => {
-  const { userStatus } = state;
-  const {
-    isAuthenticated,
-    isAuthenticatedError,
-  } = userStatus;
-  return {
-    isAuthenticated,
-    isAuthenticatedError,
-  };
-};
-
-export default connect(mapStateToProps)(VerifyAuthentication);

@@ -1,12 +1,6 @@
-import { authenticationAttempt } from '../actions';
-
 const apiUri = process.env.NEXT_PUBLIC_API_URI;
 
-const authenticate = (data) => dispatch => { /* eslint-disable-line arrow-parens */
-  const {
-    athlete,
-  } = data;
-  const { id } = athlete;
+const authenticate = (id) => {
   return fetch(`${apiUri}/api/v1/authenticate`, {
     method: 'POST',
     headers: new Headers({
@@ -16,8 +10,6 @@ const authenticate = (data) => dispatch => { /* eslint-disable-line arrow-parens
     body: JSON.stringify({ id }),
   })
     .then((response) => response.json())
-    // Authenticate user
-    .then((json) => dispatch(authenticationAttempt(json)));
 };
 
 const getChallengeSegments = () => (

@@ -19,9 +19,9 @@ class Header extends Component {
   render() {
     const {
       athlete,
-      role,
+      // role,
     } = this.props;
-    console.log(`role: ${role}`);
+    // console.log(`role: ${role}`);
     if (athlete === undefined) {
       return;
     }
@@ -73,17 +73,17 @@ Header.propTypes = {
 const mapStateToProps = (state) => {
   const {
     userSessionData,
-    userStatus,
+    // userStatus,
   } = state;
   const {
     athlete,
   } = userSessionData;
-  const {
+  /* const {
     role,
-  } = userStatus;
+  } = userStatus; */
   return {
     athlete,
-    role,
+    // role,
   };
 };
 
