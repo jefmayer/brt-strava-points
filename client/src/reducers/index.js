@@ -54,24 +54,8 @@ const appData = (state = {}, action = {}) => {
   }
 };
 
-const appStatus = (state = {
-  isInitializationComplete: false,
-}, action = {}) => {
-  const { type } = action;
-  switch (type) {
-    case INITIALIZATION_COMPLETE:
-      return {
-        ...state,
-        isInitializationComplete: true,
-      };
-    default:
-      return state;
-  }
-};
-
 const rootReducer = combineReducers({
   appData,
-  appStatus,
   userSessionData,
 });
 

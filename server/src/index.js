@@ -37,6 +37,11 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.post('/api/v1/authenticate', (req, res) => {
+  if (req.body.id === '') {
+    res.end(JSON.stringify({
+      success: false,
+    }));
+  }
   co(function * () {
     const docs = yield find(db, 'users');
     for (var i = 0; i <docs.length; i++) {
@@ -58,13 +63,13 @@ app.post('/api/v1/authenticate', (req, res) => {
           profile,
           role,
           sex,      
-          success: 'success',
+          success: true,
         }));
         return;
       }
     }
     res.end(JSON.stringify({
-      success: 'error',
+      success: false,
     }));
   }).catch(err => console.log(err));
 });

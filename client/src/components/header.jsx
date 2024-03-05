@@ -84,6 +84,15 @@ class Header extends Component {
               <li>
                 <button
                   className="font-semibold px-4 py-2 text-white"
+                  onClick={null}
+                  type="button"
+                >
+                  Bingo Card
+                </button>
+              </li>
+              <li>
+                <button
+                  className="font-semibold px-4 py-2 text-white"
                   onClick={this.onLogoutClick}
                   type="button"
                 >

@@ -24,9 +24,6 @@ export const updateUserSegments = (json) => ({
   data: json,
 });
 
-export const initializationComplete = () => ({
-  type: INITIALIZATION_COMPLETE,
-});
 
 export const getUserSegments = (token, segments) => {
   const arr = segments.map((segment) => (
@@ -40,11 +37,10 @@ export const loadStandingsData = () => dispatch => { /* eslint-disable-line arro
     .then((json) => {
       dispatch(updateChallengeSegments(json));
       // Get all user athelete data
-      dispatch(initializationComplete());
       /* const token = getAccessToken();
       getUserSegments(token, json)
         .then(() => {
-          dispatch(initializationComplete());
+          //
         }); */
     });
 };

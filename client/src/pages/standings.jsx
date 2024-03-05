@@ -26,23 +26,10 @@ class Standings extends Component {
   }
 
   componentDidMount() {
-    /*
-      1. Authenticate using id in local storage
-        a. authenticate() returns logged-in user's athlete data
-        b. If authentication is invalid, redirect to error page
-        c. If valid, continue
-      2. Get segments from DB
-      3. Get all users' data from DB (not just logged-in user data)
-        a. Logged-in user's athlete data should have been saved to DB upon authentication
-      4. Get all users' segment data from DB (not just logged-in user data)
-        a. Logged-in user's segment data should have been saved to DB upon authentication
-    */
     const id = getUserId();
-    if (id === '') {
-      this.setState({ isAuthenticationError: true });
-    }
     authenticate(id)
       .then((data) => {
+        console.log('authenticate?');
         if (data.success) {
           const { dispatch } = this.props;
           console.log(data);
