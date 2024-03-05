@@ -42,13 +42,22 @@ app.post('/api/v1/authenticate', (req, res) => {
     for (var i = 0; i <docs.length; i++) {
       const item = docs[i];
       const {
+        firstname,
+        lastname,
         id,
+        profile,
         role,
+        sex,        
       } = item;
       const reqId = req.body.id.toString().trim();
       if (id.toString().trim() === reqId) {
         res.end(JSON.stringify({
+          firstname,
+          lastname,
+          id,
+          profile,
           role,
+          sex,      
           success: 'success',
         }));
         return;

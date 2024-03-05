@@ -30,7 +30,7 @@ class StandingsMenu extends Component {
           onClick={this.onMenuClick}
           type="button"
         >
-          <span className="block color-brt-white font-semibold mx-auto py-3 text-2xl text-center text-neutral-200">
+          <span className="block font-semibold mx-auto py-3 text-2xl text-center text-neutral-200">
             {selectedSegment.name}
           </span>
         </button>

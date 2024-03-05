@@ -8,7 +8,14 @@ import styles from '../styles/header.module.scss';
 class Header extends Component {
   constructor(props) {
     super(props);
+    this.onLogoutClick = this.onLogoutClick.bind(this);
     this.onMenuClick = this.onMenuClick.bind(this);
+    this.onUpdateClick = this.onUpdateClick.bind(this);
+  }
+
+  onLogoutClick() {
+    console.log(this);
+    // Wipe local storage
   }
 
   onMenuClick(event) {
@@ -16,19 +23,25 @@ class Header extends Component {
     console.log(this);
   }
 
+  onUpdateClick() {
+    console.log(this);
+    // Check access token status
+    // Authenticate
+    // Persist Response
+  }
+
   render() {
     const {
-      athlete,
-      // role,
+      profile,
+      role,
     } = this.props;
-    // console.log(`role: ${role}`);
-    if (athlete === undefined) {
+    if (profile === undefined) {
       return;
     }
-    const { profile_medium } = athlete;
+    console.log(`role: ${role}`);
     return (
       <header className="bg-brt-red h-16">
-        <div className="flex h-full items-center justify-between mx-auto px-4">
+        <div className="flex h-full items-center justify-between mx-auto px-4 relative">
           <div>
             <Image
               alt=""
@@ -47,7 +60,7 @@ class Header extends Component {
               <Image
                 alt=""
                 height={48}
-                src={profile_medium}
+                src={profile}
                 width={48}
               />
             </span>
@@ -57,6 +70,28 @@ class Header extends Component {
               <span />
             </span>
           </button>
+          <div className="absolute bg-brt-red top-16 right-0 w-64">
+            <ul className="flex flex-col">
+              <li>
+                <button
+                  className="font-semibold px-4 py-2 text-white"
+                  onClick={this.onUpdateClick}
+                  type="button"
+                >
+                  Update
+                </button>
+              </li>
+              <li>
+                <button
+                  className="font-semibold px-4 py-2 text-white"
+                  onClick={this.onLogoutClick}
+                  type="button"
+                >
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </header>
     );
@@ -64,26 +99,19 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  athlete: PropTypes.shape({
-    profile_medium: PropTypes.string,
-  }).isRequired,
+  profile: PropTypes.string,
   role: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
+  const { userSessionData } = state;
   const {
-    userSessionData,
-    // userStatus,
-  } = state;
-  const {
-    athlete,
-  } = userSessionData;
-  /* const {
+    profile,
     role,
-  } = userStatus; */
+  } = userSessionData;
   return {
-    athlete,
-    // role,
+    profile,
+    role,
   };
 };
 

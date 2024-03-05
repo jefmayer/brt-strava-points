@@ -10,36 +10,36 @@ const getAccessToken = () => {
     const data = retreiveFromLocalStorage(lsKey);
     const { access_token } = data;
     return access_token;
-  } catch {
+  } catch (error) {
+    console.error(error);
     return '';
   }
-}
+};
 
 const getUserId = () => {
   try {
     const data = retreiveFromLocalStorage(lsKey);
     const { id } = data;
     return id;
-  } catch {
+  } catch (error) {
+    console.error(error);
     return '';
   }
-}
-
-const isAccessTokenExpired = (data) => {
-  console.log(data);
 };
 
-const isAuthenticated = () => {
+const isAccessTokenExpired = () => {
   try {
     const data = retreiveFromLocalStorage(lsKey);
-    const { logged_in } = data;
-    return logged_in === true;
-  } catch {
-    return false;
+    const { expires_at } = data;
+    const ts = new Date().getTime();
+    return ts > expires_at * 1000;
+  } catch (error) {
+    console.error(error);
+    return true;
   }
 };
 
-const persistTokenRepsonse = (data) => {
+const persistAccessTokenRepsonse = (data) => {
   const {
     athlete,
     access_token,
@@ -58,31 +58,9 @@ const persistTokenRepsonse = (data) => {
   });
 };
 
-const useAccessToken = () => {
-  try {
-    const data = retreiveFromLocalStorage(lsKey);
-    if (!isAccessTokenExpired(data)) {
-      return data.access_token;
-    }
-  } catch {
-    return null;
-  }
-};
-
-const useRefreshToken = () => {
-  try {
-    const data = retreiveFromLocalStorage(lsKey);
-    console.log(data);
-  } catch {
-    return null;
-  }
-};
-
 export {
   getAccessToken,
   getUserId,
-  isAuthenticated,
-  persistTokenRepsonse,
-  useAccessToken,
-  useRefreshToken,
+  isAccessTokenExpired,
+  persistAccessTokenRepsonse,
 };

@@ -35,14 +35,17 @@ export const getUserSegments = (token, segments) => {
   return Promise.all(arr);
 };
 
-export const initialize = (access_token) => dispatch => { /* eslint-disable-line arrow-parens */
+export const loadStandingsData = () => dispatch => { /* eslint-disable-line arrow-parens */
   getChallengeSegments()
     .then((json) => {
       dispatch(updateChallengeSegments(json));
-      getUserSegments(access_token, json)
+      // Get all user athelete data
+      dispatch(initializationComplete());
+      /* const token = getAccessToken();
+      getUserSegments(token, json)
         .then(() => {
           dispatch(initializationComplete());
-        });
+        }); */
     });
 };
 

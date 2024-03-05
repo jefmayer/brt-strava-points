@@ -13,7 +13,8 @@ const retreiveFromLocalStorage = (key) => {
   const { localStorage } = window;
   try {
     return JSON.parse(localStorage.getItem(key));
-  } catch {
+  } catch (error) {
+    console.error(error);
     return null;
   }
 };

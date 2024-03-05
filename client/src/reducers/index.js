@@ -15,23 +15,23 @@ const userSessionData = (state = {}, action = {}) => {
     type,
   } = action;
   const {
-    access_token,
-    athlete,
-    expires_at,
-    expires_in,
-    refresh_token,
-    token_type,
+    firstname,
+    id,
+    lastname,
+    profile,
+    role,
+    sex,
   } = data;
   switch (type) {
     case USER_SESSION_DATA:
       return {
         ...state,
-        access_token,
-        athlete,
-        expires_at,
-        expires_in,
-        refresh_token,
-        token_type,
+        firstname,
+        id,
+        lastname,
+        profile,
+        role,
+        sex,
       };
     default:
       return state;

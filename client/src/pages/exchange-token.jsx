@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
 import { connect } from 'react-redux';
 import { getAccessToken } from '../api/strava';
-import { persistTokenRepsonse } from '../utils/strava-oauth-utils';
+import { persistAccessTokenRepsonse } from '../utils/strava-oauth-utils';
 import { persistUserSessionData } from '../actions';
 import { updateUserAthleteData } from '../api/brt';
 
@@ -21,10 +21,10 @@ class ExchangeToken extends Component {
     };
     getAccessToken()
       .then((data) => {
-        persistTokenRepsonse(data);
+        persistAccessTokenRepsonse(data);
         const { athlete } = data;
         updateUserAthleteData(athlete);
-        dispatch(persistUserSessionData(data));
+        dispatch(persistUserSessionData(athlete));
         this.setState({ authenticationSuccess: true });
       })
       .catch(() => {

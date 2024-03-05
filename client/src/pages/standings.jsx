@@ -1,35 +1,56 @@
 import '../config';
 
 import React, { Component } from 'react';
-import {
-  getAccessToken,
-  getUserId,
-} from '../utils/strava-oauth-utils';
+import { loadStandingsData, persistUserSessionData } from '../actions';
 
 import Head from 'next/head';
 import Header from '../components/header';
 import Leaderboard from '../components/standings/leaderboard';
 import PropTypes from 'prop-types';
+import RedirectComponent from '../components/redirect';
 import StandingsMenu from '../components/standings/standings-menu';
-import VerifyAuthentication from '../components/verify-authentication';
 import { authenticate } from '../api/brt';
 import { connect } from 'react-redux';
 import { getDefaultSegmentObj } from '../helpers/segment-helpers';
-import { initialize } from '../actions';
+import { getUserId } from '../utils/strava-oauth-utils';
 
 class Standings extends Component {
   constructor(props) {
     super(props);
     const selectedSegment = getDefaultSegmentObj();
-    this.state = { selectedSegment };
-    this.setSelectedSegment = this.setSelectedSegment.bind(this);
-    const { dispatch } = props;
+    this.state = {
+      isAuthenticationError: false,
+      selectedSegment,
+    };
+    this.setSelectedSegment = this.setSelectedSegment.bind(this);    
+  }
+
+  componentDidMount() {
+    /*
+      1. Authenticate using id in local storage
+        a. authenticate() returns logged-in user's athlete data
+        b. If authentication is invalid, redirect to error page
+        c. If valid, continue
+      2. Get segments from DB
+      3. Get all users' data from DB (not just logged-in user data)
+        a. Logged-in user's athlete data should have been saved to DB upon authentication
+      4. Get all users' segment data from DB (not just logged-in user data)
+        a. Logged-in user's segment data should have been saved to DB upon authentication
+    */
     const id = getUserId();
-    authenticate(id) // authenticate needs to return athlete data
-      .then(() => {
-        const token = getAccessToken();
-        console.log(`token: ${token}`);
-        dispatch(initialize(token))
+    if (id === '') {
+      this.setState({ isAuthenticationError: true });
+    }
+    authenticate(id)
+      .then((data) => {
+        if (data.success) {
+          const { dispatch } = this.props;
+          console.log(data);
+          dispatch(persistUserSessionData(data));
+          dispatch(loadStandingsData());
+        } else {
+          this.setState({ isAuthenticationError: true });
+        }
       });
   }
 
@@ -39,10 +60,19 @@ class Standings extends Component {
 
   render() {
     const { segments } = this.props;
-    const { selectedSegment } = this.state;
+    const { 
+      isAuthenticationError,
+      selectedSegment,
+    } = this.state;
     const isSegments = segments !== undefined;
     return (
       <>
+        { isAuthenticationError
+        && (
+          <RedirectComponent
+            route="/"
+          />
+        )}
         <Head>
           <title>{ global.config.i18n.siteTitle.en }</title>
           <meta name="description" content="" />
@@ -51,7 +81,6 @@ class Standings extends Component {
         </Head>
         <Header />
         <main>
-          <VerifyAuthentication />
           <div className="container mb-6 mt-12 mx-auto">
             <h1 className="font-bold text-5xl text-center">Standings</h1>
           </div>
