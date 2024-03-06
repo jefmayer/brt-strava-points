@@ -1,6 +1,7 @@
 import {
-  INITIALIZATION_COMPLETE,
-  UPDATE_CHALLENGE_SEGMENTS,
+  ATTEMPTS,
+  SEGMENTS,
+  USERS,
   USER_SESSION_DATA,
 } from '../actions';
 
@@ -20,7 +21,6 @@ const userSessionData = (state = {}, action = {}) => {
     lastname,
     profile,
     role,
-    sex,
   } = data;
   switch (type) {
     case USER_SESSION_DATA:
@@ -31,7 +31,6 @@ const userSessionData = (state = {}, action = {}) => {
         lastname,
         profile,
         role,
-        sex,
       };
     default:
       return state;
@@ -44,10 +43,20 @@ const appData = (state = {}, action = {}) => {
     type,
   } = action;
   switch (type) {
-    case UPDATE_CHALLENGE_SEGMENTS:
+    case SEGMENTS:
       return {
         ...state,
         segments: data,
+      };
+    case ATTEMPTS:
+      return {
+        ...state,
+        attempts: data,
+      };
+      case USERS:
+      return {
+        ...state,
+        users: data,
       };
     default:
       return state;

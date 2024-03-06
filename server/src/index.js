@@ -52,7 +52,6 @@ app.post('/api/v1/authenticate', (req, res) => {
         id,
         profile,
         role,
-        sex,        
       } = item;
       const reqId = req.body.id.toString().trim();
       if (id.toString().trim() === reqId) {
@@ -62,7 +61,6 @@ app.post('/api/v1/authenticate', (req, res) => {
           id,
           profile,
           role,
-          sex,      
           success: true,
         }));
         return;
@@ -83,30 +81,33 @@ app.post('/api/v1/users/update', (req, res) => {
       lastname,
       id,
       profile,
-      sex,
     } = data;
     const doc = {
       firstname,
       lastname,
       id,
       profile,
-      sex,
     };
     dbo.collection('users').updateOne(
       { id },
       { $set: doc },
       { upsert: true }
     )
-    // Return all users... maybe
-    const users = yield find(db, 'users')
-    res.end(JSON.stringify(users));
+    const docs = yield find(db, 'users')
+    res.end(JSON.stringify(docs));
   }).catch(err => console.log(err));
+});
+app.get('/api/v1/users', (req, res) => {
+  co(function * () {
+    const docs = yield find(db, 'users');
+    res.end(JSON.stringify(docs));
+  }).catch(err => console.log(err))
 });
 app.get('/api/v1/segments', (req, res) => {
   co(function * () {
     const docs = yield find(db, 'segments');
     res.end(JSON.stringify(docs));
   }).catch(err => console.log(err))
-})
+});
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
   

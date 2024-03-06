@@ -5,11 +5,11 @@ import React, { Component } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
+import { addUser } from '../api/brt';
 import { connect } from 'react-redux';
 import { getAccessToken } from '../api/strava';
 import { persistAccessTokenRepsonse } from '../utils/strava-oauth-utils';
-import { persistUserSessionData } from '../actions';
-import { updateUserAthleteData } from '../api/brt';
+import { updateUserSessionData } from '../actions';
 
 class ExchangeToken extends Component {
   constructor(props) {
@@ -23,8 +23,8 @@ class ExchangeToken extends Component {
       .then((data) => {
         persistAccessTokenRepsonse(data);
         const { athlete } = data;
-        updateUserAthleteData(athlete);
-        dispatch(persistUserSessionData(athlete));
+        addUser(athlete);
+        dispatch(updateUserSessionData(athlete));
         this.setState({ authenticationSuccess: true });
       })
       .catch(() => {

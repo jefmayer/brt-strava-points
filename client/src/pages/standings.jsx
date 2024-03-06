@@ -1,7 +1,17 @@
 import '../config';
 
 import React, { Component } from 'react';
-import { loadStandingsData, persistUserSessionData } from '../actions';
+import {
+  authenticate,
+  getSegments,
+  getUsers,
+} from '../api/brt';
+import {
+  updateAttempts,
+  updateSegments,
+  updateUserSessionData,
+  updateUsers,
+} from '../actions';
 
 import Head from 'next/head';
 import Header from '../components/header';
@@ -9,8 +19,8 @@ import Leaderboard from '../components/standings/leaderboard';
 import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
 import StandingsMenu from '../components/standings/standings-menu';
-import { authenticate } from '../api/brt';
 import { connect } from 'react-redux';
+import { getAttempts } from '../selectors';
 import { getDefaultSegmentObj } from '../helpers/segment-helpers';
 import { getUserId } from '../utils/strava-oauth-utils';
 
@@ -29,15 +39,31 @@ class Standings extends Component {
     const id = getUserId();
     authenticate(id)
       .then((data) => {
-        console.log('authenticate?');
         if (data.success) {
           const { dispatch } = this.props;
-          console.log(data);
-          dispatch(persistUserSessionData(data));
-          dispatch(loadStandingsData());
+          dispatch(updateUserSessionData(data));
+          this.update();
         } else {
           this.setState({ isAuthenticationError: true });
         }
+      });
+  }
+
+  update() {
+    const { dispatch } = this.props;
+    getSegments()
+      .then((data) => {
+        dispatch(updateSegments(data));
+        getUsers()
+          .then((data) => {
+            dispatch(updateUsers(data));
+            const { segments, users } = this.props;
+            /*getAttempts(segments, users)
+              .then((data) => {
+                console.log(data);
+                dispatch(updateAttempts(data));
+              }); */
+          });
       });
   }
 
@@ -99,9 +125,11 @@ const mapStateToProps = (state) => {
   } = state;
   const {
     segments,
+    users,
   } = appData;
   return {
     segments,
+    users,
   };
 };
 

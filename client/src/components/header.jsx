@@ -4,6 +4,7 @@ import Image from 'next/image';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from '../styles/header.module.scss';
+import { updateStandings } from '../actions';
 
 class Header extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class Header extends Component {
   }
 
   onLogoutClick() {
-    console.log(this);
+    const { dispatch } = this.props;
     // Wipe local storage
   }
 
@@ -24,7 +25,8 @@ class Header extends Component {
   }
 
   onUpdateClick() {
-    console.log(this);
+    const { dispatch } = this.props;
+    dispatch(updateStandings());
     // Check access token status
     // Authenticate
     // Persist Response
@@ -78,7 +80,7 @@ class Header extends Component {
                   onClick={this.onUpdateClick}
                   type="button"
                 >
-                  Update
+                  Update Standings
                 </button>
               </li>
               <li>

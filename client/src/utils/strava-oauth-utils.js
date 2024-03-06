@@ -53,7 +53,6 @@ const persistAccessTokenRepsonse = (data) => {
     expires_at,
     expires_in,
     id,
-    logged_in: true,
     refresh_token,
   });
 };

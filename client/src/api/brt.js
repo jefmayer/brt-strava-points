@@ -12,7 +12,7 @@ const authenticate = (id) => {
     .then((response) => response.json())
 };
 
-const getChallengeSegments = () => (
+const getSegments = () => (
   fetch(`${apiUri}/api/v1/segments`, {
     method: 'GET',
     headers: new Headers({
@@ -23,7 +23,18 @@ const getChallengeSegments = () => (
     .then((response) => response.json())
 );
 
-const updateUserAthleteData = (data) => (
+const getUsers = () => (
+  fetch(`${apiUri}/api/v1/users`, {
+    method: 'GET',
+    headers: new Headers({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    }),
+  })
+    .then((response) => response.json())
+);
+
+const addUser = (data) => (
   fetch(`${apiUri}/api/v1/users/update`, {
     method: 'POST',
     headers: new Headers({
@@ -35,8 +46,12 @@ const updateUserAthleteData = (data) => (
     .then((response) => response.json())
 );
 
+// Add attempt...
+// Only write if not already in DB
+
 export {
+  addUser,
   authenticate,
-  getChallengeSegments,
-  updateUserAthleteData,
+  getSegments,
+  getUsers,
 };
