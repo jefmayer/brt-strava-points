@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
+import { compareAttemptResults, getBestAttemptBySegment } from '@/selectors';
 
 import Image from 'next/image';
 import PropTypes from 'prop-types';
+import { addAttempts } from '@/api/brt';
 import { connect } from 'react-redux';
-import { getBestAttemptBySegment } from '@/selectors';
 import styles from '../styles/header.module.scss';
-import { updateStandings } from '../actions';
+import { updateAttempts } from '../actions';
 
 class Header extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isMenuOpen: false,
+    };
     this.onLogoutClick = this.onLogoutClick.bind(this);
     this.onMenuClick = this.onMenuClick.bind(this);
     this.onUpdateClick = this.onUpdateClick.bind(this);
@@ -20,19 +24,25 @@ class Header extends Component {
     // Wipe local storage
   }
 
-  onMenuClick(event) {
-    console.log(event);
-    console.log(this);
+  onMenuClick() {
+    const { isMenuOpen } = this.state;
+    this.setState({ isMenuOpen: !isMenuOpen });
   }
 
   onUpdateClick() {
-    const { dispatch, segments } = this.props;
-
-    console.log(getBestAttemptBySegment(segments));
-    // dispatch(updateStandings());
-    // Check access token status
-    // Authenticate
-    // Persist Response
+    const {
+      attempts,
+      dispatch,
+      segments,
+    } = this.props;
+    getBestAttemptBySegment(segments)
+      .then((data) => {
+        const bestAttempts = compareAttemptResults(data, attempts);
+        dispatch(
+          updateAttempts(bestAttempts)
+        );
+        addAttempts(bestAttempts);
+      });
   }
 
   render() {
@@ -40,6 +50,7 @@ class Header extends Component {
       profile,
       role,
     } = this.props;
+    const { isMenuOpen } = this.state;
     if (profile === undefined) {
       return;
     }
@@ -75,7 +86,7 @@ class Header extends Component {
               <span />
             </span>
           </button>
-          <div className="absolute bg-brt-red top-16 right-0 w-64">
+          <div className={`${isMenuOpen ? '' : 'hidden'} absolute bg-brt-red top-16 right-0 w-64`}>
             <ul className="flex flex-col">
               <li>
                 <button
@@ -125,6 +136,7 @@ const mapStateToProps = (state) => {
     userSessionData,
   } = state;
   const {
+    attempts,
     segments,
     users,
   } = appData;
@@ -133,6 +145,7 @@ const mapStateToProps = (state) => {
     role,
   } = userSessionData;
   return {
+    attempts,
     profile,
     role,
     segments,

@@ -8,12 +8,15 @@ import styles from '../../styles/standings-menu.module.scss';
 class StandingsMenu extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isMenuOpen: false,
+    };
     this.onMenuClick = this.onMenuClick.bind(this);
   }
 
   onMenuClick() {
-    console.log(this);
-    console.log('open/close standings menu')
+    const { isMenuOpen } = this.state;
+    this.setState({ isMenuOpen: !isMenuOpen });
   }
 
   render() {
@@ -22,6 +25,7 @@ class StandingsMenu extends Component {
       selectedSegment,
       setSelectedSegment,
     } = this.props;
+    const { isMenuOpen } = this.state;
     const defaultSegment = getDefaultSegmentObj();
     return (
       <>
@@ -34,7 +38,7 @@ class StandingsMenu extends Component {
             {selectedSegment.name}
           </span>
         </button>
-        <ul className="bg-neutral-700">
+        <ul className={`${isMenuOpen ? '' : 'hidden'} bg-neutral-700`}>
           <li>
             <StandingsMenuItem
               isSelected={defaultSegment.id === selectedSegment.id}

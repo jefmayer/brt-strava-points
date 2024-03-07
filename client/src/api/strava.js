@@ -3,7 +3,7 @@ import {
   persistRefreshTokenResponse,
 } from '@/utils/strava-oauth-utils';
 
-import { getParameterByName } from '../utils/url-utils';
+import { getParameterByName } from '@/utils/url-utils';
 
 const requestAccessToken = (refreshToken) => {
   const clientId = process.env.NEXT_PUBLIC_STRAVA_CLIENT_ID;
@@ -43,16 +43,15 @@ const requestAccessToken = (refreshToken) => {
 const getSegmentEffort = (segmentId) => {
   const endpoint = process.env.NEXT_PUBLIC_STRAVA_API_URL;
   const url = `${endpoint}/segment_efforts?segment_id=${segmentId}`;
-  // Get token
-  getAccessToken().then((token) => {
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
+    getAccessToken().then((token) => {
       const xhr = new XMLHttpRequest();
       xhr.open('GET', url);
       xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 400) {
           const response = JSON.parse(xhr.responseText);
-          console.log(response);
+          // console.log(response);
           resolve(response);
         } else {
           reject(new Error(`${xhr.status}: ${xhr.statusText}`));

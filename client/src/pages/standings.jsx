@@ -32,7 +32,7 @@ class Standings extends Component {
       isAuthenticationError: false,
       selectedSegment,
     };
-    this.setSelectedSegment = this.setSelectedSegment.bind(this);    
+    this.setSelectedSegment = this.setSelectedSegment.bind(this);
   }
 
   componentDidMount() {

@@ -102,11 +102,23 @@ app.post('/api/v1/attempts/update', (req, res) => {
     const dbo = db.db(dbName);
     const { body } = req;
     const { data } = body;
-    const { attempts } = data;
-    
-    const docs = yield find(db, 'users')
+    data.forEach((doc) => {
+      const { brt_id } = doc;
+      dbo.collection('attempts').updateOne(
+        { id : brt_id },
+        { $set: doc },
+        { upsert: true }
+      )
+    });
+    const docs = yield find(db, 'attempts')
     res.end(JSON.stringify(docs));
   }).catch(err => console.log(err));
+});
+app.get('/api/v1/attempts', (req, res) => {
+  co(function * () {
+    const docs = yield find(db, 'attempts');
+    res.end(JSON.stringify(docs));
+  }).catch(err => console.log(err))
 });
 app.get('/api/v1/users', (req, res) => {
   co(function * () {
