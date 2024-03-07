@@ -3,6 +3,7 @@ import '../config';
 import React, { Component } from 'react';
 import {
   authenticate,
+  getAttempts,
   getSegments,
   getUsers,
 } from '../api/brt';
@@ -20,7 +21,6 @@ import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
 import StandingsMenu from '../components/standings/standings-menu';
 import { connect } from 'react-redux';
-import { getAttempts } from '../selectors';
 import { getDefaultSegmentObj } from '../helpers/segment-helpers';
 import { getUserId } from '../utils/strava-oauth-utils';
 
@@ -57,12 +57,10 @@ class Standings extends Component {
         getUsers()
           .then((data) => {
             dispatch(updateUsers(data));
-            const { segments, users } = this.props;
-            /*getAttempts(segments, users)
+            getAttempts()
               .then((data) => {
-                console.log(data);
                 dispatch(updateAttempts(data));
-              }); */
+              });
           });
       });
   }
@@ -117,6 +115,7 @@ class Standings extends Component {
 Standings.propTypes = {
   dispatch: PropTypes.func,
   segments: PropTypes.arrayOf(PropTypes.object),
+  users: PropTypes.arrayOf(PropTypes.object),
 };
 
 const mapStateToProps = (state) => {

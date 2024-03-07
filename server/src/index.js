@@ -97,6 +97,17 @@ app.post('/api/v1/users/update', (req, res) => {
     res.end(JSON.stringify(docs));
   }).catch(err => console.log(err));
 });
+app.post('/api/v1/attempts/update', (req, res) => {
+  co(function * () {
+    const dbo = db.db(dbName);
+    const { body } = req;
+    const { data } = body;
+    const { attempts } = data;
+    
+    const docs = yield find(db, 'users')
+    res.end(JSON.stringify(docs));
+  }).catch(err => console.log(err));
+});
 app.get('/api/v1/users', (req, res) => {
   co(function * () {
     const docs = yield find(db, 'users');

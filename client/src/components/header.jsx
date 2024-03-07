@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { getBestAttemptBySegment } from '@/selectors';
 import styles from '../styles/header.module.scss';
 import { updateStandings } from '../actions';
 
@@ -25,8 +26,10 @@ class Header extends Component {
   }
 
   onUpdateClick() {
-    const { dispatch } = this.props;
-    dispatch(updateStandings());
+    const { dispatch, segments } = this.props;
+
+    console.log(getBestAttemptBySegment(segments));
+    // dispatch(updateStandings());
     // Check access token status
     // Authenticate
     // Persist Response
@@ -112,10 +115,19 @@ class Header extends Component {
 Header.propTypes = {
   profile: PropTypes.string,
   role: PropTypes.string,
+  segments: PropTypes.arrayOf(PropTypes.object),
+  users: PropTypes.arrayOf(PropTypes.object),
 };
 
 const mapStateToProps = (state) => {
-  const { userSessionData } = state;
+  const {
+    appData,
+    userSessionData,
+  } = state;
+  const {
+    segments,
+    users,
+  } = appData;
   const {
     profile,
     role,
@@ -123,6 +135,8 @@ const mapStateToProps = (state) => {
   return {
     profile,
     role,
+    segments,
+    users,
   };
 };
 

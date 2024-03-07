@@ -1,14 +1,15 @@
 import '../config';
 
 import React, { Component } from 'react';
+import { addAttempts, addUser } from '../api/brt';
 
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
-import { addUser } from '../api/brt';
 import { connect } from 'react-redux';
-import { getAccessToken } from '../api/strava';
+import { getBestAttemptBySegment } from '@/selectors';
 import { persistAccessTokenRepsonse } from '../utils/strava-oauth-utils';
+import { requestAccessToken } from '../api/strava';
 import { updateUserSessionData } from '../actions';
 
 class ExchangeToken extends Component {
@@ -19,13 +20,21 @@ class ExchangeToken extends Component {
       authenticationError: false,
       authenticationSuccess: false,
     };
-    getAccessToken()
+    requestAccessToken()
       .then((data) => {
         persistAccessTokenRepsonse(data);
         const { athlete } = data;
         addUser(athlete);
         dispatch(updateUserSessionData(athlete));
-        this.setState({ authenticationSuccess: true });
+        getSegments()
+          .then((data) => {
+            getBestAttemptBySegment(data)
+              .then((data) => {
+                console.log(data);
+                addAttempts(data)
+                this.setState({ authenticationSuccess: true });
+              });
+          });
       })
       .catch(() => {
         this.setState({ authenticationError: true });
