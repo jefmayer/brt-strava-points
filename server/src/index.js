@@ -105,7 +105,7 @@ app.post('/api/v1/attempts/update', (req, res) => {
     data.forEach((doc) => {
       const { brt_id } = doc;
       dbo.collection('attempts').updateOne(
-        { id : brt_id },
+        { brt_id },
         { $set: doc },
         { upsert: true }
       )

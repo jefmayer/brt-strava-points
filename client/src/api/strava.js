@@ -14,11 +14,12 @@ const requestAccessToken = (refreshToken) => {
   const clientSecret = process.env.NEXT_PUBLIC_STRAVA_CLIENT_SECRET;
   const endpoint = process.env.NEXT_PUBLIC_STRAVA_TOKEN_URL;
   let url = `${endpoint}?client_id=${clientId}&client_secret=${clientSecret}`;
+  console.log(refreshToken);
   if (refreshToken) {
     url = url.concat(`&grant_type=refresh_token&refresh_token=${refreshToken}`);
   } else {
     const code = getParameterByName('code');
-    url = url.concat(`&code=${code}&grant_type=authorization_code}`);
+    url = url.concat(`&code=${code}&grant_type=authorization_code`);
   }
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -31,6 +32,7 @@ const requestAccessToken = (refreshToken) => {
         if (refreshToken) {
           persistRefreshTokenResponse(response);
         }
+        console.log(response);
         resolve(response);
       } else {
         reject(new Error(`${xhr.status}: ${xhr.statusText}`));

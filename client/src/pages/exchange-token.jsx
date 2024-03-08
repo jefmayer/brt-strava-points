@@ -29,9 +29,9 @@ class ExchangeToken extends Component {
       authenticationSuccess: false,
     };
     requestAccessToken()
-      .then((data0) => {
-        persistAccessTokenRepsonse(data0);
-        const { athlete } = data0;
+      .then((data) => {
+        persistAccessTokenRepsonse(data);
+        const { athlete } = data;
         addUser(athlete);
         dispatch(
           updateUserSessionData(athlete),
@@ -41,8 +41,6 @@ class ExchangeToken extends Component {
           .then((segments) => {
             getBestAttemptBySegment(segments)
               .then((attempts) => {
-                // Do we need to check DB to see if there's any attempts for this user?
-                // ...probably
                 addAttempts(attempts);
                 this.setState({ authenticationSuccess: true });
               });
