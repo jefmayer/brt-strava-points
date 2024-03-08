@@ -17,7 +17,7 @@ class StandingsMenuItem extends Component {
   }
 
   render() {
-    const { 
+    const {
       isSelected,
       segment,
     } = this.props;

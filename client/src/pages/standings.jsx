@@ -22,7 +22,7 @@ import RedirectComponent from '../components/redirect';
 import StandingsMenu from '../components/standings/standings-menu';
 import { connect } from 'react-redux';
 import { getDefaultSegmentObj } from '../helpers/segment-helpers';
-import { getUserId } from '../utils/strava-oauth-utils';
+import { getUserId } from '../utils/localstorage-utils';
 
 class Standings extends Component {
   constructor(props) {
@@ -49,29 +49,33 @@ class Standings extends Component {
       });
   }
 
+  setSelectedSegment(selectedSegment) {
+    this.setState({ selectedSegment });
+  }
+
   update() {
     const { dispatch } = this.props;
     getSegments()
-      .then((data) => {
-        dispatch(updateSegments(data));
+      .then((data0) => {
+        dispatch(updateSegments(data0));
         getUsers()
-          .then((data) => {
-            dispatch(updateUsers(data));
+          .then((data1) => {
+            dispatch(updateUsers(data1));
             getAttempts()
-              .then((data) => {
-                dispatch(updateAttempts(data));
+              .then((data2) => {
+                dispatch(updateAttempts(data2));
               });
           });
       });
   }
 
-  setSelectedSegment(selectedSegment) {
-    this.setState({ selectedSegment });
-  }
-
   render() {
-    const { segments } = this.props;
-    const { 
+    const {
+      attempts,
+      segments,
+      users,
+    } = this.props;
+    const {
       isAuthenticationError,
       selectedSegment,
     } = this.state;
@@ -104,7 +108,9 @@ class Standings extends Component {
               />
             )}
           <Leaderboard
+            attempts={attempts}
             segment={selectedSegment}
+            users={users}
           />
         </main>
       </>
@@ -113,6 +119,7 @@ class Standings extends Component {
 }
 
 Standings.propTypes = {
+  attempts: PropTypes.arrayOf(PropTypes.object),
   dispatch: PropTypes.func,
   segments: PropTypes.arrayOf(PropTypes.object),
   users: PropTypes.arrayOf(PropTypes.object),
@@ -123,10 +130,12 @@ const mapStateToProps = (state) => {
     appData,
   } = state;
   const {
+    attempts,
     segments,
     users,
   } = appData;
   return {
+    attempts,
     segments,
     users,
   };

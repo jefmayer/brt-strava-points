@@ -7,16 +7,20 @@ const compareAttemptResults = (newAttempts, existingAttempts) => (
   })
 );
 
+const getLatestUsers = (users) => {
+  console.log(users);
+};
+
 // Only called on authentication/update
 const getBestAttemptBySegment = (segments) => {
   const year = new Date().getFullYear();
-  const arr = segments.map((segment, index) => {
-    return getSegmentEffort(segment.id).then((data) => (
+  const arr = segments.map((segment) => (
+    getSegmentEffort(segment.id).then((data) => (
       data
         .filter((attempt) => attempt.start_date.indexOf(`${year}-`) !== -1)
         .at(0)
-    ));
-  });
+    ))
+  ));
   return Promise.all(arr)
     .then((data) => (
       data
@@ -38,5 +42,6 @@ const getStandingsForSegment = (segment) => {
 export {
   compareAttemptResults,
   getBestAttemptBySegment,
+  getLatestUsers,
   getStandingsForSegment,
 };

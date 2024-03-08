@@ -6,6 +6,7 @@ const saveToLocalStorage = (key, data) => {
   if (typeof window === 'undefined') return null;
   const { localStorage } = window;
   localStorage.setItem(key, JSON.stringify(data));
+  return true;
 };
 
 const retreiveFromLocalStorage = (key) => {
@@ -18,7 +19,6 @@ const retreiveFromLocalStorage = (key) => {
     return null;
   }
 };
-
 
 export {
   isBrowser,

@@ -1,12 +1,13 @@
-import React from 'react';
-import { Html, Head, Main, NextScript } from 'next/document';
+import { Head, Html, Main, NextScript } from 'next/document';
+
 import Footer from '../components/footer';
+import React from 'react';
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head />
-      <body className="bg-white text-brt-black">
+      <body className="bg-white flex flex-col min-h-screen text-brt-black">
         <Main />
         <Footer />
         <NextScript />

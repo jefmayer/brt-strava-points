@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import RedirectComponent from '../components/redirect';
 import { authenticate } from '../api/brt';
-import { getUserId } from '../utils/strava-oauth-utils';
+import { getUserId } from '../utils/localstorage-utils';
 
 class Home extends Component {
   constructor(props) {

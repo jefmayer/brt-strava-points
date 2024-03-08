@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { compareAttemptResults, getBestAttemptBySegment } from '@/selectors';
+import { compareAttemptResults, getBestAttemptBySegment, getLatestUsers } from '../selectors';
 
 import Image from 'next/image';
 import PropTypes from 'prop-types';
-import { addAttempts } from '@/api/brt';
+import { addAttempts } from '../api/brt';
 import { connect } from 'react-redux';
 import styles from '../styles/header.module.scss';
+import { updateAccessToken } from '../api/strava';
 import { updateAttempts } from '../actions';
 
 class Header extends Component {
@@ -20,8 +21,9 @@ class Header extends Component {
   }
 
   onLogoutClick() {
-    const { dispatch } = this.props;
+    // const { dispatch } = this.props;
     // Wipe local storage
+    console.log(this);
   }
 
   onMenuClick() {
@@ -34,14 +36,19 @@ class Header extends Component {
       attempts,
       dispatch,
       segments,
+      users,
     } = this.props;
-    getBestAttemptBySegment(segments)
-      .then((data) => {
-        const bestAttempts = compareAttemptResults(data, attempts);
-        dispatch(
-          updateAttempts(bestAttempts)
-        );
-        addAttempts(bestAttempts);
+    updateAccessToken()
+      .then(() => {
+        getBestAttemptBySegment(segments)
+          .then((data) => {
+            const bestAttempts = compareAttemptResults(data, attempts);
+            dispatch(
+              updateAttempts(bestAttempts),
+            );
+            addAttempts(bestAttempts);
+          });
+        getLatestUsers(users);
       });
   }
 
@@ -51,9 +58,6 @@ class Header extends Component {
       role,
     } = this.props;
     const { isMenuOpen } = this.state;
-    if (profile === undefined) {
-      return;
-    }
     console.log(`role: ${role}`);
     return (
       <header className="bg-brt-red h-16">
@@ -124,6 +128,8 @@ class Header extends Component {
 }
 
 Header.propTypes = {
+  attempts: PropTypes.arrayOf(PropTypes.object),
+  dispatch: PropTypes.func,
   profile: PropTypes.string,
   role: PropTypes.string,
   segments: PropTypes.arrayOf(PropTypes.object),

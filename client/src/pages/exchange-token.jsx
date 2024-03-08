@@ -1,16 +1,24 @@
 import '../config';
 
 import React, { Component } from 'react';
-import { addAttempts, addUser } from '../api/brt';
+import {
+  addAttempts,
+  addUser,
+  getSegments,
+} from '../api/brt';
 
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
 import { connect } from 'react-redux';
-import { getBestAttemptBySegment } from '@/selectors';
-import { persistAccessTokenRepsonse } from '../utils/strava-oauth-utils';
+import {
+  getBestAttemptBySegment,
+} from '../selectors';
+import { persistAccessTokenRepsonse } from '../utils/localstorage-utils';
 import { requestAccessToken } from '../api/strava';
-import { updateUserSessionData } from '../actions';
+import {
+  updateUserSessionData,
+} from '../actions';
 
 class ExchangeToken extends Component {
   constructor(props) {
@@ -21,17 +29,21 @@ class ExchangeToken extends Component {
       authenticationSuccess: false,
     };
     requestAccessToken()
-      .then((data) => {
-        persistAccessTokenRepsonse(data);
-        const { athlete } = data;
+      .then((data0) => {
+        persistAccessTokenRepsonse(data0);
+        const { athlete } = data0;
         addUser(athlete);
-        dispatch(updateUserSessionData(athlete));
+        dispatch(
+          updateUserSessionData(athlete),
+        );
+        // Get best attempts from user
         getSegments()
-          .then((data) => {
-            getBestAttemptBySegment(data)
-              .then((data) => {
-                console.log(data);
-                addAttempts(data)
+          .then((segments) => {
+            getBestAttemptBySegment(segments)
+              .then((attempts) => {
+                // Do we need to check DB to see if there's any attempts for this user?
+                // ...probably
+                addAttempts(attempts);
                 this.setState({ authenticationSuccess: true });
               });
           });

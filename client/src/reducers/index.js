@@ -53,7 +53,7 @@ const appData = (state = {}, action = {}) => {
         ...state,
         attempts: data,
       };
-      case USERS:
+    case USERS:
       return {
         ...state,
         users: data,

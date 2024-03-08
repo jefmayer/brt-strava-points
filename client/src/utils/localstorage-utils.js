@@ -3,38 +3,12 @@ import {
   saveToLocalStorage,
 } from './browser-utils';
 
-import { requestAccessToken } from '@/api/strava';
+const lsKey = process.env.NEXT_PUBLIC_LOCAL_STORAGE_KEY;
 
-const lsKey = 'brtstravapoints.oauth';
-
-const getAccessToken = () => (
-  new Promise((resolve) => {
-    try {
-      const data = retreiveFromLocalStorage(lsKey);
-      console.log(`isAccessTokenExpired: ${isAccessTokenExpired()}`);
-      if (!isAccessTokenExpired()) {
-        const { access_token } = data;
-        resolve(access_token);
-      } else {
-        const { refresh_token } = data;
-        resolve(requestAccessToken(refresh_token));
-      }      
-    } catch (error) {
-      console.error(error);
-      resolve('');
-    }
-  })
-);
-
-const getUserId = () => {
-  try {
-    const data = retreiveFromLocalStorage(lsKey);
-    const { id } = data;
-    return id;
-  } catch (error) {
-    console.error(error);
-    return '';
-  }
+const getAccessToken = () => {
+  const data = retreiveFromLocalStorage(lsKey);
+  const { access_token } = data;
+  return access_token;
 };
 
 const isAccessTokenExpired = () => {
@@ -46,6 +20,17 @@ const isAccessTokenExpired = () => {
   } catch (error) {
     console.error(error);
     return true;
+  }
+};
+
+const getUserId = () => {
+  try {
+    const data = retreiveFromLocalStorage(lsKey);
+    const { id } = data;
+    return id;
+  } catch (error) {
+    console.error(error);
+    return '';
   }
 };
 
@@ -84,7 +69,6 @@ const persistRefreshTokenResponse = (data) => {
     refresh_token,
   });
 };
-
 
 export {
   getAccessToken,

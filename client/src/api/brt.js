@@ -1,7 +1,7 @@
 const apiUri = process.env.NEXT_PUBLIC_API_URI;
 
-const authenticate = (id) => {
-  return fetch(`${apiUri}/api/v1/authenticate`, {
+const authenticate = (id) => (
+  fetch(`${apiUri}/api/v1/authenticate`, {
     method: 'POST',
     headers: new Headers({
       Accept: 'application/json',
@@ -10,7 +10,7 @@ const authenticate = (id) => {
     body: JSON.stringify({ id }),
   })
     .then((response) => response.json())
-};
+);
 
 const getAttempts = () => (
   fetch(`${apiUri}/api/v1/attempts`, {
