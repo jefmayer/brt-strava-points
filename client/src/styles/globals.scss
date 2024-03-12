@@ -13,17 +13,24 @@ body {
 
 .btn {
   background-color: rgb(239, 239, 239);
-  border: .1rem solid transparent;
+  border: 1px solid transparent;
   border-radius: .4rem;
   color: theme('colors.black');
   font-size: theme('fontSize.sm');
+  font-weight: theme('fontWeight.semibold');
   letter-spacing: .02em;
-  padding: .4rem 1rem;
+  padding: 8px 12px;
 }
 
 .btn-primary {
   background-color: theme('colors.brt-red');
   color: theme('colors.white');
+}
+
+.btn-secondary {
+  background-color: theme('colors.white');
+  border: 1px solid #d4d4d4;
+  color: theme('colors.brt-red');
 }
 
 .action-link {

@@ -97,7 +97,7 @@ class Standings extends Component {
         <Header />
         <main>
           <div className="container mb-6 mt-12 mx-auto">
-            <h1 className="font-bold text-5xl text-center">Standings</h1>
+            <h1 className="font-extrabold text-7xl text-center">Standings</h1>
           </div>
           { isSegments
             && (

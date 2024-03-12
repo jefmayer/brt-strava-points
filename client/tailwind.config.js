@@ -18,6 +18,7 @@ module.exports = {
         'brt-light-blue': '#a4d6d7',
         'brt-med-blue': '#5a97ae',
         'brt-red': '#f7181f',
+        'strava-orange': '#f65210',
         'white': '#fff',
       },
     },

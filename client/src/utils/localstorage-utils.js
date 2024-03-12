@@ -29,7 +29,7 @@ const getUserId = () => {
     const { id } = data;
     return id;
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return '';
   }
 };

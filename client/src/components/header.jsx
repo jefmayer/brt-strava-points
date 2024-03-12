@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { compareAttemptResults, getBestAttemptBySegment, getLatestUsers } from '../selectors';
+import { logout, updateAttempts } from '../actions';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { addAttempts } from '../api/brt';
 import { connect } from 'react-redux';
 import styles from '../styles/header.module.scss';
 import { updateAccessToken } from '../api/strava';
-import { updateAttempts } from '../actions';
 
 class Header extends Component {
   constructor(props) {
@@ -21,9 +22,8 @@ class Header extends Component {
   }
 
   onLogoutClick() {
-    // const { dispatch } = this.props;
-    // Wipe local storage
-    console.log(this);
+    const { dispatch } = this.props;
+    dispatch(logout());
   }
 
   onMenuClick() {
@@ -54,42 +54,56 @@ class Header extends Component {
 
   render() {
     const {
+      loggedIn,
       profile,
       role,
     } = this.props;
     const { isMenuOpen } = this.state;
     console.log(`role: ${role}`);
     return (
-      <header className="bg-brt-red h-16">
+      <header className="bg-brt-red bg-gradient-to-r from-brt-red to-strava-orange h-16">
         <div className="flex h-full items-center justify-between mx-auto px-4 relative">
-          <div>
+          <a href="/" className="block">
             <Image
               alt=""
+              className="-mt-2"
               height={40}
               src="/images/brt-logo-white.svg"
-              width={117}
+              width={107}
             />
-          </div>
-          <button
-            className={styles.btn}
-            label="User Menu"
-            onClick={this.onMenuClick}
-            type="button"
-          >
-            <span className={styles.photo}>
-              <Image
-                alt=""
-                height={48}
-                src={profile}
-                width={48}
-              />
-            </span>
-            <span className={styles.indicator}>
-              <span />
-              <span />
-              <span />
-            </span>
-          </button>
+          </a>
+          { !loggedIn
+          && (
+            <Link
+              className="font-semibold text-sm text-white underline"
+              href={process.env.NEXT_PUBLIC_STRAVA_AUTHORIZATION_URL}
+            >
+              Rider Login
+            </Link>
+          )}
+          { loggedIn
+          && (
+            <button
+              className={styles.btn}
+              label="User Menu"
+              onClick={this.onMenuClick}
+              type="button"
+            >
+              <span className={styles.photo}>
+                <Image
+                  alt=""
+                  height={48}
+                  src={profile}
+                  width={48}
+                />
+              </span>
+              <span className={styles.indicator}>
+                <span />
+                <span />
+                <span />
+              </span>
+            </button>
+          )}
           <div className={`${isMenuOpen ? '' : 'hidden'} absolute bg-brt-red top-16 right-0 w-64`}>
             <ul className="flex flex-col">
               <li>
@@ -130,6 +144,7 @@ class Header extends Component {
 Header.propTypes = {
   attempts: PropTypes.arrayOf(PropTypes.object),
   dispatch: PropTypes.func,
+  loggedIn: PropTypes.bool,
   profile: PropTypes.string,
   role: PropTypes.string,
   segments: PropTypes.arrayOf(PropTypes.object),
@@ -140,6 +155,7 @@ const mapStateToProps = (state) => {
   const {
     appData,
     userSessionData,
+    userStatus,
   } = state;
   const {
     attempts,
@@ -150,8 +166,10 @@ const mapStateToProps = (state) => {
     profile,
     role,
   } = userSessionData;
+  const { loggedIn } = userStatus;
   return {
     attempts,
+    loggedIn,
     profile,
     role,
     segments,

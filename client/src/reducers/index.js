@@ -1,11 +1,39 @@
 import {
   ATTEMPTS,
+  LOG_IN,
+  LOG_OUT,
   SEGMENTS,
   USERS,
   USER_SESSION_DATA,
 } from '../actions';
 
 import { combineReducers } from 'redux';
+
+const appData = (state = {}, action = {}) => {
+  const {
+    data,
+    type,
+  } = action;
+  switch (type) {
+    case SEGMENTS:
+      return {
+        ...state,
+        segments: data,
+      };
+    case ATTEMPTS:
+      return {
+        ...state,
+        attempts: data,
+      };
+    case USERS:
+      return {
+        ...state,
+        users: data,
+      };
+    default:
+      return state;
+  }
+};
 
 const userSessionData = (state = {}, action = {}) => {
   if (action.data === undefined) {
@@ -37,26 +65,22 @@ const userSessionData = (state = {}, action = {}) => {
   }
 };
 
-const appData = (state = {}, action = {}) => {
+const userStatus = (state = {
+  loggedIn: false,
+}, action = {}) => {
   const {
-    data,
     type,
   } = action;
   switch (type) {
-    case SEGMENTS:
+    case LOG_IN:
       return {
         ...state,
-        segments: data,
+        loggedIn: true,
       };
-    case ATTEMPTS:
+    case LOG_OUT:
       return {
         ...state,
-        attempts: data,
-      };
-    case USERS:
-      return {
-        ...state,
-        users: data,
+        loggedIn: false,
       };
     default:
       return state;
@@ -66,6 +90,7 @@ const appData = (state = {}, action = {}) => {
 const rootReducer = combineReducers({
   appData,
   userSessionData,
+  userStatus,
 });
 
 export default rootReducer;
