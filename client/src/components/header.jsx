@@ -59,7 +59,6 @@ class Header extends Component {
       role,
     } = this.props;
     const { isMenuOpen } = this.state;
-    console.log(`role: ${role}`);
     return (
       <header className="bg-brt-red bg-gradient-to-r from-brt-red to-strava-orange h-16">
         <div className="flex h-full items-center justify-between mx-auto px-4 relative">

@@ -1,11 +1,13 @@
+import '../styles/globals.scss';
+
+import { applyMiddleware, createStore } from 'redux';
+
+import { Provider } from 'react-redux';
 /* eslint-disable react/function-component-definition, react/prop-types */
 import React from 'react';
-import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
 import reducer from '../reducers';
-import '../styles/globals.scss';
+import thunk from 'redux-thunk';
 
 const middleware = [thunk];
 // production

@@ -11,6 +11,7 @@ import {
   updateUserSessionData,
 } from '../actions';
 
+import GoogleMap from '../components/maps/all-segments/map';
 import Head from 'next/head';
 import Header from '../components/header';
 import Image from 'next/image';
@@ -18,6 +19,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getUserId } from '../utils/localstorage-utils';
+import styles from '../styles/segments-map.module.scss';
 
 class Home extends Component {
   constructor(props) {
@@ -42,6 +44,7 @@ class Home extends Component {
 
   render() {
     const { segments } = this.props;
+    const segmentCt = segments ? segments.length : 0;
     return (
       <>
         <Head>
@@ -70,7 +73,7 @@ class Home extends Component {
                     <br />
                     Challenge
                   </h1>
-                  <p className=" mb-6 text-xl">See how we measure up on the most the leg-sapping segments around Tucson and southwest Arizona.</p>
+                  <p className=" mb-6 text-xl">See how we measure up on the most the leg-sapping segments in and around Tucson, Arizona.</p>
                   <div className="flex">
                     <Link
                       className="btn btn-secondary"
@@ -86,29 +89,45 @@ class Home extends Component {
                   alt=""
                   height={500}
                   priority={true}
-                  src="/images/brt-group-ride.jpg"
+                  src="/images/brt-group-ride-1.jpg"
                   width={375}
                 />
               </div>
             </div>
           </div>
           <div>
+            <div className={styles.homepage}>
+              <GoogleMap
+                lat={32.274132}
+                lng={-110.9103777}
+                segments={segments}
+                zoom={10}
+              />
+            </div>
             <div className="max-w-7xl mx-auto py-6">
               <h2 className="font-extrabold mb-3 text-6xl text-center text-brt-red">The chase is always on.</h2>
-              <p className="max-w-md mx-auto text-center text-xl">The battle for the top spot on the leaderboard is fought across these { segments.length } Strava climbs.</p>
+              <p className="max-w-md mx-auto text-center text-xl">The battle for the top spot on the leaderboard is fought across these { segmentCt} Strava climbs.</p>
             </div>
           </div>
           <div className="py-32">
             <div className="items-center flex max-w-7xl mx-auto">
               <div className="w-1/2">
+                <Image
+                  alt=""
+                  height={300}
+                  src="/images/brt-group-ride-2.jpg"
+                  width={600}
+                />
               </div>
-              <div className="w-1/2">
-                <h2 className="font-extrabold mb-3 text-6xl text-brt-red">How Alex claims it works:</h2>
-                <ol>
-                  <li>Every rider who completes a segment will score points</li>
-                  <li>The fastest time always receives 10 points</li>
-                  <li>The rest of the riders receive points based on an  exponential decay* scoring system</li>
-                </ol>
+              <div className="w-1/2 flex justify-center">
+                <div className="max-w-80">
+                  <h2 className="font-extrabold mb-3 text-6xl text-brt-red">How <a href="https://www.strava.com/athletes/760273" className="underline">Alex</a> claims it works:</h2>
+                  <ol className="list-decimal text-xl">
+                    <li className="mb-2">Every rider who completes a segment will score points</li>
+                    <li className="mb-2">The fastest time always receives 10 points</li>
+                    <li className="mb-2">The rest of the riders receive points based on an  <a className="underline" href="https://en.wikipedia.org/wiki/Exponential_decay">exponential decay*</a> scoring system</li>
+                  </ol>
+                </div>
               </div>
             </div>
           </div>
