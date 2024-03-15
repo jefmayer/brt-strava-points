@@ -5,6 +5,7 @@ import { logout, updateAttempts } from '../actions';
 import Image from 'next/image';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import Routes from '../routes';
 import { addAttempts } from '../api/brt';
 import { connect } from 'react-redux';
 import styles from '../styles/header.module.scss';
@@ -18,7 +19,6 @@ class Header extends Component {
     };
     this.onLogoutClick = this.onLogoutClick.bind(this);
     this.onMenuClick = this.onMenuClick.bind(this);
-    this.onUpdateClick = this.onUpdateClick.bind(this);
   }
 
   onLogoutClick() {
@@ -31,27 +31,6 @@ class Header extends Component {
     this.setState({ isMenuOpen: !isMenuOpen });
   }
 
-  onUpdateClick() {
-    const {
-      attempts,
-      dispatch,
-      segments,
-      users,
-    } = this.props;
-    updateAccessToken()
-      .then(() => {
-        getBestAttemptBySegment(segments)
-          .then((data) => {
-            const bestAttempts = compareAttemptResults(data, attempts);
-            dispatch(
-              updateAttempts(bestAttempts),
-            );
-            addAttempts(bestAttempts);
-          });
-        getLatestUsers(users);
-      });
-  }
-
   render() {
     const {
       loggedIn,
@@ -59,10 +38,11 @@ class Header extends Component {
       role,
     } = this.props;
     const { isMenuOpen } = this.state;
+    const isAdmin = role === 'admin';
     return (
       <header className="bg-brt-red bg-gradient-to-r from-brt-red to-strava-orange h-16">
         <div className="flex h-full items-center justify-between mx-auto px-4 relative">
-          <a href="/" className="block">
+          <Link href={Routes.Home} className="block">
             <Image
               alt=""
               className="-mt-2"
@@ -70,7 +50,7 @@ class Header extends Component {
               src="/images/brt-logo-white.svg"
               width={107}
             />
-          </a>
+          </Link>
           { !loggedIn
           && (
             <Link
@@ -105,24 +85,33 @@ class Header extends Component {
           )}
           <div className={`${isMenuOpen ? '' : 'hidden'} absolute bg-brt-red top-16 right-0 w-64`}>
             <ul className="flex flex-col">
-              <li>
-                <button
-                  className="font-semibold px-4 py-2 text-white"
-                  onClick={this.onUpdateClick}
-                  type="button"
+            <li>
+                <Link
+                  href={Routes.Standings}
+                  className="font-semibold inline-block px-4 py-2 text-white"
                 >
-                  Update Standings
-                </button>
+                  Standings
+                </Link>
               </li>
               <li>
-                <button
-                  className="font-semibold px-4 py-2 text-white"
-                  onClick={null}
-                  type="button"
+                <Link
+                  href={Routes.CompletedSegments}
+                  className="font-semibold inline-block px-4 py-2 text-white"
                 >
-                  Bingo Card
-                </button>
+                  Completed Segments
+                </Link>
               </li>
+              { isAdmin
+              && (
+                <li>
+                  <Link
+                    className="font-semibold inline-block px-4 py-2 text-white"
+                    href={Routes.Admin}
+                  >
+                    Site Admin
+                  </Link>
+                </li>
+              )}
               <li>
                 <button
                   className="font-semibold px-4 py-2 text-white"

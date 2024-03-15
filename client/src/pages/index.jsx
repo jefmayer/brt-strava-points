@@ -17,6 +17,7 @@ import Header from '../components/header';
 import Image from 'next/image';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import Routes from '../routes';
 import { connect } from 'react-redux';
 import { getUserId } from '../utils/localstorage-utils';
 import styles from '../styles/segments-map.module.scss';
@@ -77,7 +78,7 @@ class Home extends Component {
                   <div className="flex">
                     <Link
                       className="btn btn-secondary"
-                      href="/standings"
+                      href={Routes.Standings}
                     >
                       View Standings
                     </Link>
@@ -121,11 +122,11 @@ class Home extends Component {
               </div>
               <div className="w-1/2 flex justify-center">
                 <div className="max-w-80">
-                  <h2 className="font-extrabold mb-3 text-6xl text-brt-red">How <a href="https://www.strava.com/athletes/760273" className="underline">Alex</a> claims it works:</h2>
+                  <h2 className="font-extrabold mb-3 text-6xl text-brt-red">How <a href="https://www.strava.com/athletes/760273" className="underline hover:no-underline">Alex</a> claims it works:</h2>
                   <ol className="list-decimal text-xl">
                     <li className="mb-2">Every rider who completes a segment will score points</li>
                     <li className="mb-2">The fastest time always receives 10 points</li>
-                    <li className="mb-2">The rest of the riders receive points based on an  <a className="underline" href="https://en.wikipedia.org/wiki/Exponential_decay">exponential decay*</a> scoring system</li>
+                    <li className="mb-2">The rest of the riders receive points based on an  <a className="underline hover:no-underline" href="https://en.wikipedia.org/wiki/Exponential_decay">exponential decay*</a> scoring system</li>
                   </ol>
                 </div>
               </div>

@@ -2,12 +2,19 @@ import '../config';
 
 import React, { Component } from 'react';
 import {
+  addAttempts,
   authenticate,
   getAttempts,
   getSegments,
   getUsers,
 } from '../api/brt';
 import {
+  compareAttemptResults,
+  getBestAttemptBySegment,
+  getLatestUsers,
+} from '../selectors';
+import {
+  login,
   updateAttempts,
   updateSegments,
   updateUserSessionData,
@@ -19,10 +26,12 @@ import Header from '../components/header';
 import Leaderboard from '../components/standings/leaderboard';
 import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
+import Routes from '../routes';
 import StandingsMenu from '../components/standings/standings-menu';
 import { connect } from 'react-redux';
 import { getDefaultSegmentObj } from '../helpers/segment-helpers';
 import { getUserId } from '../utils/localstorage-utils';
+import { updateAccessToken } from '../api/strava';
 
 class Standings extends Component {
   constructor(props) {
@@ -33,6 +42,7 @@ class Standings extends Component {
       selectedSegment,
     };
     this.setSelectedSegment = this.setSelectedSegment.bind(this);
+    this.onUpdateClick = this.onUpdateClick.bind(this);
   }
 
   componentDidMount() {
@@ -42,6 +52,7 @@ class Standings extends Component {
         if (data.success) {
           const { dispatch } = this.props;
           dispatch(updateUserSessionData(data));
+          dispatch(login());
           this.update();
         } else {
           this.setState({ isAuthenticationError: true });
@@ -69,6 +80,27 @@ class Standings extends Component {
       });
   }
 
+  onUpdateClick() {
+    const {
+      attempts,
+      dispatch,
+      segments,
+      users,
+    } = this.props;
+    updateAccessToken()
+      .then(() => {
+        getBestAttemptBySegment(segments)
+          .then((data) => {
+            const bestAttempts = compareAttemptResults(data, attempts);
+            dispatch(
+              updateAttempts(bestAttempts),
+            );
+            addAttempts(bestAttempts);
+          });
+        getLatestUsers(users);
+      });
+  }
+
   render() {
     const {
       attempts,
@@ -85,7 +117,7 @@ class Standings extends Component {
         { isAuthenticationError
         && (
           <RedirectComponent
-            route="/"
+            route={Routes.Home}
           />
         )}
         <Head>
@@ -98,6 +130,13 @@ class Standings extends Component {
         <main>
           <div className="container mb-6 mt-12 mx-auto">
             <h1 className="font-extrabold text-7xl text-center">Standings</h1>
+            <button
+              className="btn btn-secondary"
+              onClick={this.onUpdateClick}
+              type="button"
+            >
+              Update Standings
+            </button>
           </div>
           { isSegments
             && (

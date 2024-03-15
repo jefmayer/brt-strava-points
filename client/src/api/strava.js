@@ -7,7 +7,7 @@ import {
 import { getParameterByName } from '../utils/url-utils';
 import { retreiveFromLocalStorage } from '../utils/browser-utils';
 
-const lsKey = process.env.NEXT_PUBLIC_LOCAL_STORAGE_KEY;
+const lsKey = process.env.NEXT_PUBLIC_OAUTH_LOCAL_STORAGE_KEY;
 
 const requestAccessToken = (refreshToken) => {
   const clientId = process.env.NEXT_PUBLIC_STRAVA_CLIENT_ID;

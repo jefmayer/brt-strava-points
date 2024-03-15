@@ -10,6 +10,7 @@ import {
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
+import Routes from '../routes'
 import { connect } from 'react-redux';
 import {
   getBestAttemptBySegment,
@@ -71,13 +72,13 @@ class ExchangeToken extends Component {
           {authenticationSuccess
             && (
               <RedirectComponent
-                route="/standings"
+                route={Routes.Standings}
               />
             )}
           {authenticationError
             && (
               <RedirectComponent
-                route="/"
+                route={Routes.Home}
               />
             )}
         </main>

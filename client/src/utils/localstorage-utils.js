@@ -3,17 +3,18 @@ import {
   saveToLocalStorage,
 } from './browser-utils';
 
-const lsKey = process.env.NEXT_PUBLIC_LOCAL_STORAGE_KEY;
+const appLsKey = process.env.NEXT_PUBLIC_APP_LOCAL_STORAGE_KEY;
+const oauthLsKey = process.env.NEXT_PUBLIC_OAUTH_LOCAL_STORAGE_KEY;
 
 const getAccessToken = () => {
-  const data = retreiveFromLocalStorage(lsKey);
+  const data = retreiveFromLocalStorage(oauthLsKey);
   const { access_token } = data;
   return access_token;
 };
 
 const isAccessTokenExpired = () => {
   try {
-    const data = retreiveFromLocalStorage(lsKey);
+    const data = retreiveFromLocalStorage(oauthLsKey);
     const { expires_at } = data;
     const ts = new Date().getTime();
     return ts > expires_at * 1000;
@@ -25,7 +26,7 @@ const isAccessTokenExpired = () => {
 
 const getUserId = () => {
   try {
-    const data = retreiveFromLocalStorage(lsKey);
+    const data = retreiveFromLocalStorage(oauthLsKey);
     const { id } = data;
     return id;
   } catch (error) {
@@ -43,7 +44,7 @@ const persistAccessTokenRepsonse = (data) => {
     refresh_token,
   } = data;
   const { id } = athlete;
-  saveToLocalStorage(lsKey, {
+  saveToLocalStorage(oauthLsKey, {
     access_token,
     expires_at,
     expires_in,
@@ -59,9 +60,9 @@ const persistRefreshTokenResponse = (data) => {
     expires_in,
     refresh_token,
   } = data;
-  const lsData = retreiveFromLocalStorage(lsKey);
+  const lsData = retreiveFromLocalStorage(oauthLsKey);
   const { id } = lsData;
-  saveToLocalStorage(lsKey, {
+  saveToLocalStorage(oauthLsKey, {
     access_token,
     expires_at,
     expires_in,

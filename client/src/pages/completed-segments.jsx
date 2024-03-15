@@ -21,7 +21,7 @@ import Routes from '../routes';
 import { connect } from 'react-redux';
 import { getUserId } from '../utils/localstorage-utils';
 
-class Admin extends Component {
+class CompletedSegments extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -82,7 +82,7 @@ class Admin extends Component {
         <Header />
         <main>
           <div className="container mb-6 mt-12 mx-auto">
-            <h1 className="font-extrabold text-7xl text-center">Site Admin</h1>
+            <h1 className="font-extrabold text-7xl text-center">Completed Segments</h1>
           </div>
         </main>
       </>
@@ -90,7 +90,7 @@ class Admin extends Component {
   }
 }
 
-Admin.propTypes = {
+CompletedSegments.propTypes = {
   dispatch: PropTypes.func,
   segments: PropTypes.arrayOf(PropTypes.object),
   users: PropTypes.arrayOf(PropTypes.object),
@@ -110,4 +110,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Admin);
+export default connect(mapStateToProps)(CompletedSegments);

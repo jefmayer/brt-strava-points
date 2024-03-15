@@ -12,7 +12,7 @@ body {
 }
 
 .btn {
-  background-color: rgb(239, 239, 239);
+  background-color: theme('colors.neutral.50');
   border: 1px solid transparent;
   border-radius: .4rem;
   color: theme('colors.black');
@@ -29,8 +29,15 @@ body {
 
 .btn-secondary {
   background-color: theme('colors.white');
-  border: 1px solid #d4d4d4;
+  border: 1px solid theme('colors.neutral.200');
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
   color: theme('colors.brt-red');
+  transition: box-shadow .25s ease-in-out, border-color .25s ease-in-out;
+
+  &:hover {
+    border-color: theme('colors.neutral.300');
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .1);
+  }
 }
 
 .action-link {
