@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import { compareAttemptResults, getBestAttemptBySegment, getLatestUsers } from '../selectors';
-import { logout, updateAttempts } from '../actions';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import Routes from '../routes';
-import { addAttempts } from '../api/brt';
 import { connect } from 'react-redux';
+import { logout } from '../actions';
 import styles from '../styles/header.module.scss';
-import { updateAccessToken } from '../api/strava';
 
 class Header extends Component {
   constructor(props) {

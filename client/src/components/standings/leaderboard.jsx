@@ -14,9 +14,9 @@ class Leaderboard extends Component {
         <table className="table-auto w-full">
           <thead className="bg-neutral-300">
             <tr>
-              <th className="font-medium w-14 px-4 py-2 text-left text-xs">Rank</th>
-              <th className="font-medium px-4 py-2 text-left text-xs">Name</th>
-              <th className="font-medium px-4 py-2 text-left text-xs">Total</th>
+              <th className="font-semibold w-14 px-4 py-2 text-left text-xs">Rank</th>
+              <th className="font-semibold px-4 py-2 text-left text-xs">Name</th>
+              <th className="font-semibold px-4 py-2 text-left text-xs">Total</th>
             </tr>
           </thead>
           <tbody>

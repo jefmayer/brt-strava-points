@@ -13,11 +13,15 @@ import {
   updateUsers,
 } from '../actions';
 
+import AdminMenu from '../components/admin/admin-menu';
 import Head from 'next/head';
 import Header from '../components/header';
 import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
 import Routes from '../routes';
+import ScoringManager from '../components/admin/scoring-manager';
+import SegmentManager from '../components/admin/segment-manager';
+import UserManager from '../components/admin/user-manager';
 import { connect } from 'react-redux';
 import { getUserId } from '../utils/localstorage-utils';
 
@@ -26,7 +30,26 @@ class Admin extends Component {
     super(props);
     this.state = {
       isAuthenticationError: false,
+      menuItems: [
+        {
+          id: 0,
+          name: 'Riders',
+        },
+        {
+          id: 1,
+          name: 'Segments',
+        },
+        {
+          id: 2,
+          name: 'Scoring',
+        },
+      ],
+      selectedItem: {
+        id: 0,
+        name: 'Riders',
+      },
     };
+    this.setSelectedItem = this.setSelectedItem.bind(this);
   }
 
   componentDidMount() {
@@ -56,6 +79,10 @@ class Admin extends Component {
       });
   }
 
+  setSelectedItem(selectedItem) {
+    this.setState({ selectedItem });
+  }
+
   render() {
     const {
       segments,
@@ -63,8 +90,11 @@ class Admin extends Component {
     } = this.props;
     const {
       isAuthenticationError,
+      menuItems,
+      selectedItem,
     } = this.state;
-    const isSegments = segments !== undefined;
+    const isSegments = segments !== undefined && selectedItem.id === 1;
+    const isUsers = users !== undefined && selectedItem.id === 0;
     return (
       <>
         { isAuthenticationError
@@ -84,6 +114,29 @@ class Admin extends Component {
           <div className="container mb-6 mt-12 mx-auto">
             <h1 className="font-extrabold text-7xl text-center">Site Admin</h1>
           </div>
+          < AdminMenu
+            menuItems={menuItems}
+            selectedItem={selectedItem}
+            setSelectedItem={this.setSelectedItem}
+          />
+          { isUsers
+          && (
+            <UserManager
+              users={users}
+            />
+          )}
+          { isSegments
+          && (
+            <SegmentManager
+              segments={segments}
+            />
+          )}
+          { selectedItem.id === 2
+          && (
+            <ScoringManager
+              users={users}
+            />
+          )}
         </main>
       </>
     );
