@@ -14,6 +14,6 @@ class ScoringManager extends Component {
       </>
     );
   }
-};
+}
 
 export default ScoringManager;

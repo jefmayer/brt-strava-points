@@ -10,13 +10,10 @@ class SegmentManager extends Component {
   }
 
   onAddClick() {
-    const {
-      launchUpdateModal,
-      segment,
-    } = this.props;
+    const { launchUpdateModal } = this.props;
     launchUpdateModal({
       action: 'add',
-      data: segment,
+      data: {},
       type: 'segment',
     });
   }
@@ -32,7 +29,7 @@ class SegmentManager extends Component {
           <h2 className="font-extrabold text-6xl">Segments</h2>
         </div>
         <div>
-        <table className="table-auto w-full">
+          <table className="table-auto w-full">
             <thead className="bg-neutral-300">
               <tr>
                 <th className="font-semibold pl-4 pr-2 py-2 text-left text-xs">Name</th>
@@ -45,15 +42,15 @@ class SegmentManager extends Component {
               </tr>
             </thead>
             <tbody>
-            {
-              segments.map((segment) => (
-                <SegmentRecord
-                  launchUpdateModal={launchUpdateModal}
-                  key={segment.id}
-                  segment={segment}
-                />
-              ))
-            }
+              {
+                segments.map((segment) => (
+                  <SegmentRecord
+                    launchUpdateModal={launchUpdateModal}
+                    key={segment.id}
+                    segment={segment}
+                  />
+                ))
+              }
             </tbody>
           </table>
           <div className="bg-white w-full">
@@ -69,7 +66,7 @@ class SegmentManager extends Component {
       </>
     );
   }
-};
+}
 
 SegmentManager.propTypes = {
   launchUpdateModal: PropTypes.func,

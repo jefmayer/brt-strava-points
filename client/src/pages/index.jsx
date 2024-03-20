@@ -107,7 +107,8 @@ class Home extends Component {
             </div>
             <div className="max-w-7xl mx-auto py-6">
               <h2 className="font-extrabold mb-3 text-6xl text-center text-red">The chase is always on.</h2>
-              <p className="max-w-md mx-auto text-center text-xl">The battle for the top spot on the leaderboard is fought across these { segmentCt} Strava climbs.</p>
+              <p className="max-w-md mx-auto text-center text-xl">The battle for the top spot on the leaderboard is fought across these {segmentCt} Strava climbs.
+              </p>
             </div>
           </div>
           <div className="py-32">

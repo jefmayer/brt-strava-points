@@ -76,6 +76,14 @@ class Admin extends Component {
       });
   }
 
+  closeModal() {
+    this.setState({ isModal: false });
+  }
+
+  setSelectedItem(selectedItem) {
+    this.setState({ selectedItem });
+  }
+
   update() {
     const { dispatch } = this.props;
     getSegments()
@@ -86,14 +94,6 @@ class Admin extends Component {
             dispatch(updateUsers(data1));
           });
       });
-  }
-
-  closeModal() {
-    this.setState({ isModal: false });
-  }
-
-  setSelectedItem(selectedItem) {
-    this.setState({ selectedItem });
   }
 
   launchUpdateModal(options) {
@@ -148,7 +148,7 @@ class Admin extends Component {
           <div className="container mb-6 mt-12 mx-auto">
             <h1 className="font-extrabold text-7xl text-center">Site Admin</h1>
           </div>
-          < AdminMenu
+          <AdminMenu
             menuItems={menuItems}
             selectedItem={selectedItem}
             setSelectedItem={this.setSelectedItem}

@@ -60,26 +60,6 @@ class Standings extends Component {
       });
   }
 
-  setSelectedSegment(selectedSegment) {
-    this.setState({ selectedSegment });
-  }
-
-  update() {
-    const { dispatch } = this.props;
-    getSegments()
-      .then((data0) => {
-        dispatch(updateSegments(data0));
-        getUsers()
-          .then((data1) => {
-            dispatch(updateUsers(data1));
-            getAttempts()
-              .then((data2) => {
-                dispatch(updateAttempts(data2));
-              });
-          });
-      });
-  }
-
   onUpdateClick() {
     const {
       attempts,
@@ -98,6 +78,26 @@ class Standings extends Component {
             addAttempts(bestAttempts);
           });
         getLatestUsers(users);
+      });
+  }
+
+  setSelectedSegment(selectedSegment) {
+    this.setState({ selectedSegment });
+  }
+
+  update() {
+    const { dispatch } = this.props;
+    getSegments()
+      .then((data0) => {
+        dispatch(updateSegments(data0));
+        getUsers()
+          .then((data1) => {
+            dispatch(updateUsers(data1));
+            getAttempts()
+              .then((data2) => {
+                dispatch(updateAttempts(data2));
+              });
+          });
       });
   }
 

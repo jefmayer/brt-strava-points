@@ -17,9 +17,9 @@ class UpdateRecordModal extends Component {
       type,
     } = this.props;
     return (
-      <div className="fixed flex h-screen items-center left-0 top-0 w-screen">
-        <div className="bg-black/75 fixed h-full left-0 top-0 w-full"></div>
-        <div className="bg-white drop-shadow-md h-36 max-w-md mx-auto p-4 relative w-full z-10">
+      <div className="fixed flex h-screen items-center justify-center left-0 top-0 w-screen">
+        <div className="bg-black/75 fixed h-full left-0 top-0 w-full" />
+        <div className="bg-white drop-shadow-md max-w-md mx-4 p-4 relative w-full z-10">
           { type === 'user'
           && (
             <UserForm
@@ -40,7 +40,7 @@ class UpdateRecordModal extends Component {
       </div>
     );
   }
-};
+}
 
 UpdateRecordModal.propTypes = {
   action: PropTypes.string,

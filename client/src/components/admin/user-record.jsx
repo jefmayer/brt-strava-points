@@ -29,12 +29,12 @@ class UserRecord extends Component {
     } = user;
     return (
       <tr className="border-b border-b-neutral-200 bg-white hover:bg-lightblue-200 transition-colors">
-        <td className="align-top font-semibold pl-4 pr-2 py-3 text-sm">{displayname}</td>
-        <td className="align-top font-semibold px-2 py-3 text-sm">{id}</td>
-        <td className="align-top font-semibold px-2 py-3 text-sm">{role}</td>
-        <td className="align-middle font-semibold pl-2 pr-4 py-3 text-right text-xs">
+        <td className="align-top pl-4 pr-2 py-3 text-sm">{displayname}</td>
+        <td className="align-top px-2 py-3 text-sm">{id}</td>
+        <td className="align-top px-2 py-3 text-sm">{role}</td>
+        <td className="align-middle pl-2 pr-4 py-3 text-right text-xs">
           <button
-            className="text-red underline"
+            className="font-semibold text-red underline"
             onClick={this.onEditClick}
             type="button"
           >

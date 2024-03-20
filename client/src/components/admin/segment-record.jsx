@@ -30,13 +30,16 @@ class SegmentRecord extends Component {
     } = segment;
     return (
       <tr className="border-b border-b-neutral-200 bg-white group hover:bg-lightblue-200 transition-colors">
-        <td className="align-top font-semibold pl-4 pr-2 py-3 text-sm">{displayname}</td>
-        <td className="align-top font-semibold px-2 py-3 text-sm">{id}</td>
-        <td className="align-top font-semibold px-2 py-3 text-sm">{estimated_time}s</td>
-        <td className="align-top font-semibold px-2 py-3 text-sm">{region_code}</td>
-        <td className="align-middle font-semibold pl-2 pr-4 py-3 text-right text-xs">
+        <td className="align-top pl-4 pr-2 py-3 text-sm">{displayname}</td>
+        <td className="align-top px-2 py-3 text-sm">{id}</td>
+        <td className="align-top px-2 py-3 text-sm">
+          {estimated_time}
+          s
+        </td>
+        <td className="align-top px-2 py-3 text-sm">{region_code}</td>
+        <td className="align-middle pl-2 pr-4 py-3 text-right text-xs">
           <button
-            className="text-red underline"
+            className="font-semibold text-red underline"
             onClick={this.onEditClick}
             type="button"
           >
@@ -46,7 +49,7 @@ class SegmentRecord extends Component {
       </tr>
     );
   }
-};
+}
 
 SegmentRecord.propTypes = {
   launchUpdateModal: PropTypes.func,

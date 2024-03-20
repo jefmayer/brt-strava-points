@@ -10,13 +10,10 @@ class UserManager extends Component {
   }
 
   onAddClick() {
-    const {
-      launchUpdateModal,
-      user,
-    } = this.props;
+    const { launchUpdateModal } = this.props;
     launchUpdateModal({
       action: 'add',
-      data: user,
+      data: {},
       type: 'user',
     });
   }
@@ -44,15 +41,15 @@ class UserManager extends Component {
               </tr>
             </thead>
             <tbody>
-            {
-              users.map((user) => (
-                <UserRecord
-                  launchUpdateModal={launchUpdateModal}
-                  key={user.id}
-                  user={user}
-                />
-              ))
-            }
+              {
+                users.map((user) => (
+                  <UserRecord
+                    launchUpdateModal={launchUpdateModal}
+                    key={user.id}
+                    user={user}
+                  />
+                ))
+              }
             </tbody>
           </table>
           <div className="bg-white w-full">
@@ -61,14 +58,14 @@ class UserManager extends Component {
               onClick={this.onAddClick}
               type="button"
             >
-              Add Segment
+              Add Rider
             </button>
           </div>
         </div>
       </>
     );
   }
-};
+}
 
 UserManager.propTypes = {
   launchUpdateModal: PropTypes.func,

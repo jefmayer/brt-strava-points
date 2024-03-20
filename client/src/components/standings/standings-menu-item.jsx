@@ -21,6 +21,7 @@ class StandingsMenuItem extends Component {
       isSelected,
       segment,
     } = this.props;
+    const { displayname } = segment;
     return (
       <button
         className={`${isSelected ? 'bg-neutral-900' : ''} w-full`}
@@ -28,7 +29,7 @@ class StandingsMenuItem extends Component {
         type="button"
       >
         <span className="block font-semibold max-w-sm mx-auto py-1.5 text-left text-md text-neutral-200">
-          {segment.displayname}
+          {displayname}
         </span>
       </button>
     );
@@ -38,8 +39,8 @@ class StandingsMenuItem extends Component {
 StandingsMenuItem.propTypes = {
   isSelected: PropTypes.bool,
   segment: PropTypes.shape({
+    displayname: PropTypes.string,
     id: PropTypes.number,
-    name: PropTypes.string,
   }).isRequired,
   setSelectedSegment: PropTypes.func,
 };

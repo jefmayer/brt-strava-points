@@ -82,10 +82,10 @@ class Header extends Component {
           )}
           <div className={`${isMenuOpen ? '' : 'hidden'} absolute bg-red top-16 right-0 w-64`}>
             <ul className="flex flex-col">
-            <li>
+              <li>
                 <Link
                   href={Routes.Standings}
-                  className="font-semibold inline-block px-4 py-2 text-white"
+                  className="block font-semibold px-4 py-2 text-white"
                 >
                   Standings
                 </Link>
@@ -93,7 +93,7 @@ class Header extends Component {
               <li>
                 <Link
                   href={Routes.CompletedSegments}
-                  className="font-semibold inline-block px-4 py-2 text-white"
+                  className="block font-semibold px-4 py-2 text-white"
                 >
                   Completed Segments
                 </Link>
@@ -102,7 +102,7 @@ class Header extends Component {
               && (
                 <li>
                   <Link
-                    className="font-semibold inline-block px-4 py-2 text-white"
+                    className="block font-semibold px-4 py-2 text-white"
                     href={Routes.Admin}
                   >
                     Site Admin
@@ -111,7 +111,7 @@ class Header extends Component {
               )}
               <li>
                 <button
-                  className="font-semibold px-4 py-2 text-white"
+                  className="block font-semibold px-4 py-2 text-white"
                   onClick={this.onLogoutClick}
                   type="button"
                 >

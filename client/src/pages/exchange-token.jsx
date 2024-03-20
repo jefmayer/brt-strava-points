@@ -10,7 +10,7 @@ import {
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import RedirectComponent from '../components/redirect';
-import Routes from '../routes'
+import Routes from '../routes';
 import { connect } from 'react-redux';
 import {
   getBestAttemptBySegment,

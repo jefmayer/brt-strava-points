@@ -52,7 +52,7 @@ class SegmentForm extends Component {
       </>
     );
   }
-};
+}
 
 SegmentForm.propTypes = {
   action: PropTypes.string,
