@@ -7,7 +7,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head />
-      <body className="bg-white flex flex-col min-h-screen text-brt-black">
+      <body className="bg-white flex flex-col min-h-screen text-neutral-800">
         <Main />
         <Footer />
         <NextScript />

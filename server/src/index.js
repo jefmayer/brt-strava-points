@@ -8,29 +8,18 @@ import mongo from 'mongodb';
 env.config();
 
 const PORT = process.env.PORT || 5001;
-const uri = process.env.MONGOLAB_URI;
+const uri = process.env.MONGODB_URI;
 const { MongoClient } = mongo;
-const client  = MongoClient;
-const dbName = 'brtstravapoints';
+const dbName = process.env.MONGODB_DB;
 // (node:83308) [MONGODB DRIVER] Warning: Current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
 let db = null;
-
 // Initialize connection once
-client.connect(uri, (err, database) => {
+MongoClient.connect(uri, (err, database) => {
   if (err) {
-    // Set up error handling
+    console.log(err);
   }
-  db = database;
+  db = database.db(dbName);
 });
-
-const find = (db, col) => (
-  co(function * () {
-    const dbo = db.db(dbName);
-    const collection = dbo.collection(col);
-    const docs = yield collection.find({}).toArray();
-    return docs;
-  })
-);
 
 const app = express();
 app.use(cors());
@@ -43,7 +32,7 @@ app.post('/api/v1/authenticate', (req, res) => {
     }));
   }
   co(function * () {
-    const docs = yield find(db, 'users');
+    const docs = yield db.collection('users').find({}).toArray();
     for (var i = 0; i <docs.length; i++) {
       const item = docs[i];
       const {
@@ -73,62 +62,64 @@ app.post('/api/v1/authenticate', (req, res) => {
 });
 app.post('/api/v1/users/update', (req, res) => {
   co(function * () {
-    const dbo = db.db(dbName);
     const { body } = req;
     const { data } = body;
     const {
+      displayname,
       firstname,
       lastname,
       id,
       profile,
+      role,
     } = data;
     const doc = {
+      ...(displayname && { displayname }),
       firstname,
       lastname,
       id,
       profile,
+      ...(role && { role }),
     };
-    dbo.collection('users').updateOne(
+    db.collection('users').updateOne(
       { id },
       { $set: doc },
-      { upsert: true }
-    )
-    const docs = yield find(db, 'users')
+      { upsert: true },
+    );
+    const docs = yield db.collection('users').find({}).toArray();
     res.end(JSON.stringify(docs));
   }).catch(err => console.log(err));
 });
 app.post('/api/v1/attempts/update', (req, res) => {
   co(function * () {
-    const dbo = db.db(dbName);
     const { body } = req;
     const { data } = body;
     data.forEach((doc) => {
       const { brt_id } = doc;
-      dbo.collection('attempts').updateOne(
+      db.collection('attempts').updateOne(
         { brt_id },
         { $set: doc },
-        { upsert: true }
+        { upsert: true },
       )
     });
-    const docs = yield find(db, 'attempts')
+    const docs = yield db.collection('attempts').find({}).toArray();
     res.end(JSON.stringify(docs));
   }).catch(err => console.log(err));
 });
 app.get('/api/v1/attempts', (req, res) => {
   co(function * () {
-    const docs = yield find(db, 'attempts');
+    const docs = yield db.collection('attempts').find({}).toArray();
     res.end(JSON.stringify(docs));
   }).catch(err => console.log(err))
 });
 app.get('/api/v1/users', (req, res) => {
   co(function * () {
-    const docs = yield find(db, 'users');
+   const docs = yield db.collection('users').find({}).toArray();
     res.end(JSON.stringify(docs));
   }).catch(err => console.log(err))
 });
 app.get('/api/v1/segments', (req, res) => {
   co(function * () {
-    const docs = yield find(db, 'segments');
+    const docs = yield db.collection('segments').find({}).toArray();
     res.end(JSON.stringify(docs));
   }).catch(err => console.log(err))
 });

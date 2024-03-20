@@ -13,12 +13,8 @@ module.exports = {
     extend: {
       colors: {
         'black': '#000',
-        'brt-black': '#2d2d2d',
-        'brt-dark-blue': '#2a4967',
-        'brt-light-blue': '#a4d6d7',
-        'brt-med-blue': '#5a97ae',
-        'brt-red': '#f7181f',
-        'strava-orange': '#f65210',
+        'red': '#f7181f',
+        'orange': '#f65210',
         'white': '#fff',
         'neutral': {
           50: '#fafafa',
@@ -32,6 +28,17 @@ module.exports = {
           800: '#262626',
           900: '#171717',
           950: '#0a0a0a',
+        },
+        'lightblue': {
+          100: '#f6fbfb',
+          200: '#edf7f7',
+          300: '#e4f3f3',
+          400: '#d2ebeb',
+          500: '#c8e6e7',
+          600: '#bfe2e3',
+          700: '#b6dedf',
+          800: '#addadb',
+          900: '#a4d6d7',
         },
       },
     },

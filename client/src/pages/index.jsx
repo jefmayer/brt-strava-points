@@ -106,7 +106,7 @@ class Home extends Component {
               />
             </div>
             <div className="max-w-7xl mx-auto py-6">
-              <h2 className="font-extrabold mb-3 text-6xl text-center text-brt-red">The chase is always on.</h2>
+              <h2 className="font-extrabold mb-3 text-6xl text-center text-red">The chase is always on.</h2>
               <p className="max-w-md mx-auto text-center text-xl">The battle for the top spot on the leaderboard is fought across these { segmentCt} Strava climbs.</p>
             </div>
           </div>
@@ -122,7 +122,7 @@ class Home extends Component {
               </div>
               <div className="w-1/2 flex justify-center">
                 <div className="max-w-80">
-                  <h2 className="font-extrabold mb-3 text-6xl text-brt-red">How <a href="https://www.strava.com/athletes/760273" className="underline hover:no-underline">Alex</a> claims it works:</h2>
+                  <h2 className="font-extrabold mb-3 text-6xl text-red">How <a href="https://www.strava.com/athletes/760273" className="underline hover:no-underline">Alex</a> claims it works:</h2>
                   <ol className="list-decimal text-xl">
                     <li className="mb-2">Every rider who completes a segment will score points</li>
                     <li className="mb-2">The fastest time always receives 10 points</li>

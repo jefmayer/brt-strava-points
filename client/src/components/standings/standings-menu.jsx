@@ -35,7 +35,7 @@ class StandingsMenu extends Component {
           type="button"
         >
           <span className="block font-semibold mx-auto py-3 text-2xl text-center text-neutral-200">
-            {selectedSegment.name}
+            {selectedSegment.displayname}
           </span>
         </button>
         <ul className={`${isMenuOpen ? '' : 'hidden'} bg-neutral-700`}>
@@ -67,7 +67,7 @@ StandingsMenu.propTypes = {
   segments: PropTypes.arrayOf(PropTypes.object),
   selectedSegment: PropTypes.shape({
     id: PropTypes.number,
-    name: PropTypes.string,
+    displayname: PropTypes.string,
   }),
   setSelectedSegment: PropTypes.func.isRequired,
 };

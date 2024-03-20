@@ -28,7 +28,7 @@ class StandingsMenuItem extends Component {
         type="button"
       >
         <span className="block font-semibold max-w-sm mx-auto py-1.5 text-left text-md text-neutral-200">
-          {segment.name}
+          {segment.displayname}
         </span>
       </button>
     );

@@ -23,21 +23,33 @@ body {
 }
 
 .btn-primary {
-  background-color: theme('colors.brt-red');
+  background-color: theme('colors.red');
+  border-color: theme('colors.red');
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
   color: theme('colors.white');
+  transition: box-shadow .25s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .35);
+  }
 }
 
 .btn-secondary {
   background-color: theme('colors.white');
-  border: 1px solid theme('colors.neutral.200');
+  border-color: theme('colors.neutral.200');
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
-  color: theme('colors.brt-red');
+  color: theme('colors.red');
   transition: box-shadow .25s ease-in-out, border-color .25s ease-in-out;
 
   &:hover {
     border-color: theme('colors.neutral.300');
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .1);
   }
+}
+
+.btn-sm {
+  font-size: theme('fontSize.xs');
+  padding: 4px 12px;
 }
 
 .action-link {

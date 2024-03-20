@@ -21,6 +21,7 @@ import RedirectComponent from '../components/redirect';
 import Routes from '../routes';
 import ScoringManager from '../components/admin/scoring-manager';
 import SegmentManager from '../components/admin/segment-manager';
+import UpdateRecordModal from '../components/admin/update-record-modal';
 import UserManager from '../components/admin/user-manager';
 import { connect } from 'react-redux';
 import { getUserId } from '../utils/localstorage-utils';
@@ -30,6 +31,7 @@ class Admin extends Component {
     super(props);
     this.state = {
       isAuthenticationError: false,
+      isModal: false,
       menuItems: [
         {
           id: 0,
@@ -44,11 +46,18 @@ class Admin extends Component {
           name: 'Scoring',
         },
       ],
+      modal: {
+        action: '',
+        data: null,
+        type: '',
+      },
       selectedItem: {
         id: 0,
         name: 'Riders',
       },
     };
+    this.closeModal = this.closeModal.bind(this);
+    this.launchUpdateModal = this.launchUpdateModal.bind(this);
     this.setSelectedItem = this.setSelectedItem.bind(this);
   }
 
@@ -79,8 +88,26 @@ class Admin extends Component {
       });
   }
 
+  closeModal() {
+    this.setState({ isModal: false });
+  }
+
   setSelectedItem(selectedItem) {
     this.setState({ selectedItem });
+  }
+
+  launchUpdateModal(options) {
+    const {
+      action,
+      data,
+      type,
+    } = options;
+    this.setState({ isModal: true });
+    this.setState({ modal: {
+      action,
+      data,
+      type,
+    } });
   }
 
   render() {
@@ -90,9 +117,16 @@ class Admin extends Component {
     } = this.props;
     const {
       isAuthenticationError,
+      isModal,
       menuItems,
+      modal,
       selectedItem,
     } = this.state;
+    const {
+      action,
+      data,
+      type,
+    } = modal;
     const isSegments = segments !== undefined && selectedItem.id === 1;
     const isUsers = users !== undefined && selectedItem.id === 0;
     return (
@@ -110,7 +144,7 @@ class Admin extends Component {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Header />
-        <main>
+        <main className="pb-24">
           <div className="container mb-6 mt-12 mx-auto">
             <h1 className="font-extrabold text-7xl text-center">Site Admin</h1>
           </div>
@@ -123,18 +157,29 @@ class Admin extends Component {
           && (
             <UserManager
               users={users}
+              launchUpdateModal={this.launchUpdateModal}
             />
           )}
           { isSegments
           && (
             <SegmentManager
               segments={segments}
+              launchUpdateModal={this.launchUpdateModal}
             />
           )}
           { selectedItem.id === 2
           && (
             <ScoringManager
               users={users}
+            />
+          )}
+          { isModal
+          && (
+            <UpdateRecordModal
+              action={action}
+              closeModal={this.closeModal}
+              data={data}
+              type={type}
             />
           )}
         </main>
