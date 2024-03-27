@@ -69,6 +69,30 @@ const addUser = (data) => (
     .then((response) => response.json())
 );
 
+const removeUser = (data) => (
+  fetch(`${apiUri}/api/v1/users/delete`, {
+    method: 'POST',
+    headers: new Headers({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({ data }),
+  })
+    .then((response) => response.json())
+);
+
+const removeSegment = (data) => (
+  fetch(`${apiUri}/api/v1/segments/delete`, {
+    method: 'POST',
+    headers: new Headers({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({ data }),
+  })
+    .then((response) => response.json())
+);
+
 export {
   addAttempts,
   addUser,
@@ -76,4 +100,6 @@ export {
   getAttempts,
   getSegments,
   getUsers,
+  removeSegment,
+  removeUser,
 };

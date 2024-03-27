@@ -39,7 +39,7 @@ class SegmentRecord extends Component {
         <td className="align-top px-2 py-3 text-sm">{region_code}</td>
         <td className="align-middle pl-2 pr-4 py-3 text-right text-xs">
           <button
-            className="font-semibold text-red underline"
+            className="font-semibold text-red-500 underline"
             onClick={this.onEditClick}
             type="button"
           >

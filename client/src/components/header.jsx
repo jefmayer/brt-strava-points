@@ -37,7 +37,7 @@ class Header extends Component {
     const { isMenuOpen } = this.state;
     const isAdmin = role === 'admin';
     return (
-      <header className="bg-red bg-gradient-to-r from-red to-orange h-16">
+      <header className="bg-red-500 bg-gradient-to-r from-red-500 to-orange h-16">
         <div className="flex h-full items-center justify-between mx-auto px-4 relative">
           <Link href={Routes.Home} className="block">
             <Image
@@ -80,7 +80,7 @@ class Header extends Component {
               </span>
             </button>
           )}
-          <div className={`${isMenuOpen ? '' : 'hidden'} absolute bg-red top-16 right-0 w-64`}>
+          <div className={`${isMenuOpen ? '' : 'hidden'} absolute bg-red-500 top-16 right-0 w-64`}>
             <ul className="flex flex-col">
               <li>
                 <Link

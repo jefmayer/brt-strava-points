@@ -32,9 +32,12 @@ app.post('/api/v1/authenticate', (req, res) => {
     }));
   }
   co(function * () {
-    const docs = yield db.collection('users').find({}).toArray();
-    for (var i = 0; i <docs.length; i++) {
-      const item = docs[i];
+    const docs = yield db.collection('users')
+      .find({})
+      .toArray();
+    const reqId = req.body.id.toString().trim();
+    const item = docs.find((doc) => doc.id.toString().trim() === reqId);
+    if (item) {
       const {
         firstname,
         lastname,
@@ -42,18 +45,15 @@ app.post('/api/v1/authenticate', (req, res) => {
         profile,
         role,
       } = item;
-      const reqId = req.body.id.toString().trim();
-      if (id.toString().trim() === reqId) {
-        res.end(JSON.stringify({
-          firstname,
-          lastname,
-          id,
-          profile,
-          role,
-          success: true,
-        }));
-        return;
-      }
+      res.end(JSON.stringify({
+        firstname,
+        lastname,
+        id,
+        profile,
+        role,
+        success: true,
+      }));
+      return;
     }
     res.end(JSON.stringify({
       success: false,
@@ -74,19 +74,25 @@ app.post('/api/v1/users/update', (req, res) => {
     } = data;
     const doc = {
       ...(displayname && { displayname }),
-      firstname,
-      lastname,
+      ...(firstname && { firstname }),
+      ...(lastname && { lastname }),
       id,
-      profile,
+      ...(profile && { profile }),
       ...(role && { role }),
     };
     db.collection('users').updateOne(
       { id },
       { $set: doc },
       { upsert: true },
-    );
-    const docs = yield db.collection('users').find({}).toArray();
-    res.end(JSON.stringify(docs));
+      () => {
+        co(function * () {
+          const docs = yield db.collection('users')
+            .find({})
+            .toArray();
+          res.end(JSON.stringify(docs));
+        });
+      },
+    )
   }).catch(err => console.log(err));
 });
 app.post('/api/v1/attempts/update', (req, res) => {
@@ -99,27 +105,75 @@ app.post('/api/v1/attempts/update', (req, res) => {
         { brt_id },
         { $set: doc },
         { upsert: true },
+        () => {
+          co(function * () {
+            const docs = yield db.collection('attempts')
+              .find({})
+              .toArray();
+            res.end(JSON.stringify(docs));
+          });
+        },
       )
     });
-    const docs = yield db.collection('attempts').find({}).toArray();
-    res.end(JSON.stringify(docs));
+  }).catch(err => console.log(err));
+});
+app.post('/api/v1/users/delete', (req, res) => {
+  co(function * () {
+    const { body } = req;
+    const { data } = body;
+    const { id } = data;
+    db.collection('users').deleteOne(
+      { id },
+    )
+      .then(() => {
+        co(function * () {
+          const docs = yield db.collection('users')
+            .find({})
+            .toArray();
+          res.end(JSON.stringify(docs));
+        });
+      });
+  }).catch(err => console.log(err));
+});
+app.post('/api/v1/segments/delete', (req, res) => {
+  co(function * () {
+    const { body } = req;
+    const { data } = body;
+    const { id } = data;
+    db.collection('segments').deleteOne(
+      { id },
+    )
+      .then(() => {
+        co(function * () {
+          const docs = yield db.collection('segments')
+            .find({})
+            .toArray();
+          res.end(JSON.stringify(docs));
+        });
+      });
   }).catch(err => console.log(err));
 });
 app.get('/api/v1/attempts', (req, res) => {
   co(function * () {
-    const docs = yield db.collection('attempts').find({}).toArray();
+    const docs = yield db.collection('attempts')
+      .find({})
+      .toArray();
     res.end(JSON.stringify(docs));
   }).catch(err => console.log(err))
 });
 app.get('/api/v1/users', (req, res) => {
   co(function * () {
-   const docs = yield db.collection('users').find({}).toArray();
+    const docs = yield db.collection('users')
+      .find({})
+      .toArray();
     res.end(JSON.stringify(docs));
   }).catch(err => console.log(err))
 });
 app.get('/api/v1/segments', (req, res) => {
   co(function * () {
-    const docs = yield db.collection('segments').find({}).toArray();
+    const docs = yield db.collection('segments')
+      .find({})
+      .toArray();
     res.end(JSON.stringify(docs));
   }).catch(err => console.log(err))
 });

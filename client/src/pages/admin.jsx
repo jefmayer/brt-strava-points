@@ -76,12 +76,12 @@ class Admin extends Component {
       });
   }
 
-  closeModal() {
-    this.setState({ isModal: false });
-  }
-
   setSelectedItem(selectedItem) {
     this.setState({ selectedItem });
+  }
+
+  closeModal() {
+    this.setState({ isModal: false });
   }
 
   update() {
