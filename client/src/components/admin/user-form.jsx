@@ -1,23 +1,23 @@
 /*
   Todos
-  [x] Set focus on modal open
-  [x] Add validation for name and strava id
-  [ ] Add confirmation message, button for Remove User
+  [ ] Add default strava profile photo
   [ ] Add confirmation toaster to manager after modal close
-  [x] Update returns for all the update functions in API code
-  [x] Update returns for all the delete functions in API code
 */
 import React, { Component } from 'react';
 import {
   addUser,
   removeUser,
 } from '../../api/brt';
+import {
+  adminUpdate,
+  updateUsers,
+} from '../../actions';
 
 import Input from './form-controls/input';
 import PropTypes from 'prop-types';
 import Select from './form-controls/select';
 import { connect } from 'react-redux';
-import { updateUsers } from '../../actions';
+import { getRoleOptions } from '../../helpers/form-helpers';
 
 class UserForm extends Component {
   constructor(props) {
@@ -44,12 +44,82 @@ class UserForm extends Component {
         },
       },
       isSubmitting: false,
+      displayRemoveConfirmation: false,
     };
     this.updateState = this.updateState.bind(this);
     this.validate = this.validate.bind(this);
     this.onCancelClick = this.onCancelClick.bind(this);
+    this.onRemoveCancelClick = this.onRemoveCancelClick.bind(this);
     this.onRemoveClick = this.onRemoveClick.bind(this);
+    this.onRemoveConfirmationClick = this.onRemoveConfirmationClick.bind(this);
     this.onSubmitClick = this.onSubmitClick.bind(this);
+  }
+
+  onSubmitClick() {
+    const { form } = this.state;
+    const {
+      displayname,
+      id,
+      role,
+    } = form;
+    const {
+      action,
+      closeModal,
+      dispatch,
+    } = this.props;
+    if (!this.validate()) {
+      return;
+    }
+    this.setState({ isSubmitting: true });
+    addUser({
+      displayname: displayname.value,
+      id: parseInt(id.value, 10),
+      ...(action === 'add' && { profile: process.env.NEXT_PUBLIC_STRAVA_DEFAULT_PROFILE }),
+      role: role.value,
+    })
+      .then((data) => {
+        dispatch(updateUsers(data));
+        dispatch(adminUpdate());
+        this.setState({ isSubmitting: false });
+        closeModal();
+      });
+  }
+
+  onRemoveConfirmationClick() {
+    const { form } = this.state;
+    const { id } = form;
+    const {
+      closeModal,
+      dispatch,
+    } = this.props;
+    removeUser({
+      id: parseInt(id.value, 10),
+    })
+      .then((data) => {
+        dispatch(updateUsers(data));
+        dispatch(adminUpdate());
+        this.setState({ isSubmitting: false });
+        closeModal();
+      });
+  }
+
+  onRemoveCancelClick() {
+    this.setState({ displayRemoveConfirmation: false });
+  }
+
+  onRemoveClick() {
+    this.setState({ displayRemoveConfirmation: true });
+  }
+
+  onCancelClick() {
+    const { closeModal } = this.props;
+    closeModal();
+  }
+
+  updateState(prop, value) {
+    const { form } = this.state;
+    form[prop].value = value;
+    this.setState(form);
   }
 
   validate() {
@@ -71,67 +141,12 @@ class UserForm extends Component {
     return isValid;
   }
 
-  updateState(prop, value) {
-    const { form } = this.state;
-    form[prop].value = value;
-    this.setState(form);
-  }
-
-  onSubmitClick() {
-    const { form } = this.state;
-    const {
-      displayname,
-      id,
-      role,
-    } = form;
-    const {
-      closeModal,
-      dispatch,
-    } = this.props;
-    if (!this.validate()) {
-      return;
-    }
-    this.setState({isSubmitting: true});
-    addUser({
-      displayname: displayname.value,
-      id: parseInt(id.value, 10),
-      role: role.value,
-    })
-      .then((data) => {
-        dispatch(updateUsers(data));
-        this.setState({isSubmitting: false});
-        closeModal();
-      });
-  }
-
-  onRemoveClick() {
-    const { form } = this.state;
-    const { id } = form;
-    const {
-      closeModal,
-      dispatch,
-    } = this.props;
-    console.log(id);
-    removeUser({
-      id: parseInt(id.value, 10),
-    })
-      .then((data) => {
-        dispatch(updateUsers(data));
-        this.setState({isSubmitting: false});
-        closeModal();
-      });
-  }
-
-  onCancelClick() {
-    const { closeModal } = this.props;
-    closeModal();
-  }
-
   render() {
     const {
       action,
     } = this.props;
     const {
+      displayRemoveConfirmation,
       form,
       isSubmitting,
     } = this.state;
@@ -151,19 +166,20 @@ class UserForm extends Component {
           && (
             <span>Update </span>
           )}
-          User
+          Rider
         </h2>
-        <form className="py-8">
-          <Input 
+        <form className="py-8 relative">
+          <div className={`absolute bg-white h-full opacity-75 top-0 w-full z-10 ${displayRemoveConfirmation ? '' : 'hidden'}`} />
+          <Input
             id="displayname"
             isValid={displayname.isValid}
             label="Name"
             onChange={this.updateState}
             placeholder="Add Name"
-            setFocus={true}
+            setFocus
             value={displayname.value}
           />
-          <Input 
+          <Input
             id="id"
             isValid={id.isValid}
             label="Strava Id"
@@ -171,11 +187,12 @@ class UserForm extends Component {
             placeholder="Add Strava Id"
             value={id.value.toString()}
           />
-          <Select 
+          <Select
             id="role"
             isValid={role.isValid}
             label="Role"
             onChange={this.updateState}
+            options={getRoleOptions()}
             value={role.value}
           />
           <div className="flex">
@@ -207,6 +224,26 @@ class UserForm extends Component {
             </div>
           )}
         </form>
+        { displayRemoveConfirmation
+        && (
+          <div className="bg-neutral-100 flex items-center justify-end p-4">
+            <div className="mr-2 text-neutral-600 text-sm">Are you sure you want to delete?</div>
+            <button
+              className={`btn btn-sm btn-primary mr-2 w-12 ${isSubmitting ? 'disabled' : ''}`}
+              onClick={this.onRemoveConfirmationClick}
+              type="button"
+            >
+              Yes
+            </button>
+            <button
+              className="btn btn-sm btn-secondary w-12"
+              onClick={this.onRemoveCancelClick}
+              type="button"
+            >
+              No
+            </button>
+          </div>
+        )}
       </>
     );
   }

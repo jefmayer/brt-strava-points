@@ -1,4 +1,5 @@
 import {
+  ADMIN_UPDATE,
   ATTEMPTS,
   LOG_IN,
   LOG_OUT,
@@ -8,6 +9,21 @@ import {
 } from '../actions';
 
 import { combineReducers } from 'redux';
+
+const appStatus = (state = {}, action = {}) => {
+  const {
+    type,
+  } = action;
+  switch (type) {
+    case ADMIN_UPDATE:
+      return {
+        ...state,
+        admin: 'updated',
+      };
+    default:
+      return state;
+  }
+};
 
 const appData = (state = {}, action = {}) => {
   const {
@@ -89,6 +105,7 @@ const userStatus = (state = {
 
 const rootReducer = combineReducers({
   appData,
+  appStatus,
   userSessionData,
   userStatus,
 });

@@ -9,16 +9,16 @@ class Input extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event) {
-    const { id, onChange } = this.props;
-    onChange(id, event.target.value);
-  }
-
   componentDidMount() {
     const { setFocus } = this.props;
     if (setFocus) {
       this.focusRef.current.focus();
     }
+  }
+
+  handleChange(event) {
+    const { id, onChange } = this.props;
+    onChange(id, event.target.value);
   }
 
   render() {

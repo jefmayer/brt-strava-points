@@ -22,6 +22,17 @@ body {
   padding: 8px 12px;
 }
 
+.btn-sm {
+  background-color: theme('colors.neutral.50');
+  border: 1px solid transparent;
+  border-radius: .3rem;
+  color: theme('colors.black');
+  font-size: theme('fontSize.xs');
+  font-weight: theme('fontWeight.semibold');
+  letter-spacing: .01em;
+  padding: 6px 9px;
+}
+
 .btn-primary {
   background-color: theme('colors.red.500');
   border-color: theme('colors.red.500');
@@ -54,8 +65,10 @@ body {
 }
 
 .btn-sm {
+  border-radius: .3rem;
   font-size: theme('fontSize.xs');
-  padding: 4px 12px;
+  letter-spacing: .01em;
+  padding: 6px 9px;
 }
 
 .action-link {

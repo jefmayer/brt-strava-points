@@ -10,11 +10,6 @@ class Select extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event) {
-    const { id, onChange } = this.props;
-    onChange(id, event.target.value);
-  }
-
   componentDidMount() {
     const { setFocus } = this.props;
     if (setFocus) {
@@ -22,11 +17,17 @@ class Select extends Component {
     }
   }
 
+  handleChange(event) {
+    const { id, onChange } = this.props;
+    onChange(id, event.target.value);
+  }
+
   render() {
     const {
       id,
       isValid,
       label,
+      options,
       value,
     } = this.props;
     return (
@@ -45,7 +46,7 @@ class Select extends Component {
           value={value}
         >
           {
-            getRoleOptions().map((option) => (
+            options.map((option) => (
               <option
                 key={option.value}
                 value={option.value}
@@ -72,6 +73,7 @@ Select.propTypes = {
   isValid: PropTypes.bool,
   label: PropTypes.string,
   onChange: PropTypes.func,
+  options: PropTypes.arrayOf(PropTypes.object),
   setFocus: PropTypes.bool,
   value: PropTypes.string,
 };
